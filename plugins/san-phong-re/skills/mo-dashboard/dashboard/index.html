@@ -86,6 +86,7 @@ h1 span{color:var(--gold)}
 .sel li button:hover{background:var(--bad);color:#fff}
 .sel-clear{background:transparent;border:0;color:var(--gold);font-size:.78rem;font-weight:700;padding:4px 6px;text-decoration:underline;text-underline-offset:3px}
 .sel-clear[hidden]{display:none}
+.modal[hidden]{display:none}
 /* confirm dialog */
 .modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:rgba(5,10,25,.55);backdrop-filter:blur(3px)}
 .mbox{width:min(560px,100%);max-height:100%;overflow:auto;background:var(--surface);color:var(--fg);border-radius:20px;box-shadow:0 24px 60px rgba(3,10,30,.45);padding:22px;display:flex;flex-direction:column;gap:14px;border-top:5px solid var(--gold)}
@@ -233,7 +234,16 @@ a.open:hover{filter:brightness(1.1)}
 }
 details.excl{background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
 details.excl summary{cursor:pointer;font-size:.86rem;font-weight:700}
-details.excl ul{margin:8px 0 0;padding-left:18px;font-size:.84rem;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+details.excl summary small{font-weight:500;color:var(--muted);margin-left:6px}
+.xlist{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.xrow{display:grid;grid-template-columns:minmax(0,1.6fr) auto minmax(0,2fr) auto;gap:6px 16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.xrow .price strong{font-size:.95rem}
+.xwhy{font-size:.8rem;color:var(--bad);font-weight:700}
+.xwhy .chips{margin-top:5px}
+a.open.ghost{background:transparent;color:var(--brand);border:1px solid var(--brand)}
+a.open.ghost:hover{background:var(--brand-soft);filter:none}
+.exlink{background:none;border:0;padding:0;font:inherit;color:var(--brand);font-weight:700;cursor:pointer;text-decoration:underline}
+@media (max-width:700px){.xrow{grid-template-columns:minmax(0,1fr) auto}.xwhy{grid-column:1/-1}}
 .empty{color:var(--muted);font-size:.92rem;margin:0;padding:18px;background:var(--sunk);border-radius:12px}
 .foot{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;border-top:1px solid var(--line);padding-top:12px}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.76rem;color:var(--muted)}
@@ -484,8 +494,8 @@ details.excl ul{margin:8px 0 0;padding-left:18px;font-size:.84rem;color:var(--mu
         criteria: { frontdesk: Y("Lễ tân 24 giờ"), payAt: Y("Thanh toán tại chỗ nghỉ"), cash: Y("Chỉ thanh toán bằng tiền mặt") }, note: "Miễn phí huỷ bất kỳ lúc nào", agoda: ag(44321019, 231481) }
     ],
     excluded: [
-      { name: "Saffron Boutique Hotel", why: "1 phòng cho 4 người, không đủ 2 phòng" },
-      { name: "Khách sạn mini Khang Thịnh", why: "1 phòng cho 4 người, không đủ 2 phòng" },
+      { source: "Booking", name: "Saffron Boutique Hotel", room: "Phòng 4 Người Có Phòng Tắm Riêng", total: 1091719, currency: "VND", score: 9.9, reviews: 18, href: bk("s-boutique", EXQ), why: "1 phòng cho 4 người, không đủ 2 phòng" },
+      { source: "Booking", name: "Khách sạn mini Khang Thịnh", room: "Phòng 4 Người Có Phòng Tắm Riêng", total: 1000000, currency: "VND", score: 9.2, reviews: 19, href: bk("khach-san-mini-khang-thinh", EXQ), why: "1 phòng cho 4 người, không đủ 2 phòng" },
       { name: "Mina Thien Ha", why: "Phòng giường tầng" },
       { name: "Socialhouse Dalat", why: "Phòng ngủ tập thể" }
     ]
@@ -540,6 +550,10 @@ details.excl ul{margin:8px 0 0;padding-left:18px;font-size:.84rem;color:var(--mu
     const cheaper = per && a.from < per * 0.85;
     return `<div class="cmp"><span class="src">Agoda</span><a href="${esc(a.href)}" target="_blank" rel="noopener">từ ${money(a.from, a.cur || "VND")} / phòng / đêm ↗</a><span class="${cheaper ? "cheaper" : "na"}">${cheaper ? "Có thể rẻ hơn Booking, xem kỹ" : "chưa gồm thuế phí"}</span></div>`;
   }
+  // excluded stays keep their price, room and link so they can still be opened
+  const xOf = (c, why, source) => ({ source: source || c.source || "Booking", name: c.name, href: c.href || "", total: c.total ?? null, currency: c.currency || "",
+    room: c.room || "", score: c.score ?? null, reviews: c.reviews ?? null, criteria: c.criteria || null, why });
+  const xHref = (x, q) => x.href || ((x.source || "Booking") === "Booking" && q ? `https://www.booking.com/searchresults.vi.html?ss=${encodeURIComponent(String(x.name).replace(/^Airbnb · /, "") + ", " + q.place)}&checkin=${q.checkin}&checkout=${q.checkout}&group_adults=${q.adults}&no_rooms=${q.rooms}&group_children=${q.children || 0}` : "");
   const CHIP = { yes:["yes", "✓"], unknown: ["unknown", "?"], no: ["no", "✕"] };
   function render(data) {
     current = data;
@@ -563,7 +577,7 @@ details.excl ul{margin:8px 0 0;padding-left:18px;font-size:.84rem;color:var(--mu
       <div class="t best"><span>Rẻ nhất · ${n} đêm × ${q.rooms} phòng</span><strong>${money(best.total, best.currency)}</strong><small>${esc(best.name)}</small></div>
       ${nearest ? `<div class="t"><span>Gần nhất ${esc(nearest.distLabel || "")}</span><strong>${fmtDist(nearest.dist)}</strong><small>${esc(nearest.name)} · ${money(nearest.total, nearest.currency)}</small></div>` : ""}
       <div class="t"><span>Đạt yêu cầu</span><strong>${R.length}</strong><small>${R.filter(r => !unknownCount(r)).length} chỗ đạt trọn vẹn</small></div>
-      <div class="t"><span>Tra cứu lúc</span><strong>${when.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}</strong><small>${when.toLocaleDateString("vi-VN")} · ${(data.excluded || []).length} chỗ bị loại</small></div>` : "";
+      <div class="t"><span>Tra cứu lúc</span><strong>${when.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}</strong><small>${when.toLocaleDateString("vi-VN")} · ${(data.excluded || []).length ? `<button type="button" class="exlink">${data.excluded.length} chỗ bị loại</button>` : "0 chỗ bị loại"}</small></div>` : "";
     let html = "";
     if (R.length) {
       html += `<div class="tablewrap"><table><thead><tr><th>#</th><th>Chỗ ở</th><th>Tổng tiền</th><th>Yêu cầu</th><th></th></tr></thead><tbody>`;
@@ -587,9 +601,19 @@ details.excl ul{margin:8px 0 0;padding-left:18px;font-size:.84rem;color:var(--mu
       html += `<p class="empty">Không chỗ nào trong số đã kiểm tra đáp ứng đủ yêu cầu. Thử bỏ bớt một yêu cầu, tăng ngân sách hoặc tăng số chỗ kiểm tra trong “Tuỳ chọn thêm”.</p>`;
     }
     if (data.excluded?.length) {
-      html += `<details class="excl"><summary>Đã loại ${data.excluded.length} chỗ và lý do</summary><ul>${data.excluded.map(x => `<li><b>${esc(x.name)}</b>: ${esc(x.why)}</li>`).join("")}</ul></details>`;
+      const X = data.excluded.slice().sort((a, b) => (a.total ?? Infinity) - (b.total ?? Infinity));
+      html += `<details class="excl" id="exclBox"><summary>Đã loại ${X.length} chỗ<small>bấm để xem lý do và mở trang từng chỗ</small></summary><ul class="xlist">${X.map(x => {
+        const href = xHref(x, q), src = String(x.source || (/^Airbnb · /.test(x.name) ? "Airbnb" : "Booking"));
+        const failed = crit.map(c => [c, (x.criteria || {})[c.k]]).filter(([, v]) => v && v.v !== "yes");
+        return `<li class="xrow">
+          <div class="name"><div class="hname"><span class="srcb ${src === "Airbnb" ? "airbnb" : ""}">${esc(src)}</span>${esc(String(x.name).replace(/^Airbnb · /, ""))}</div>${x.room ? `<div class="room">${esc(x.room)}</div>` : ""}
+            ${x.score ? `<div class="score"><b>${src === "Airbnb" ? "★ " : ""}${esc(String(x.score).replace(".", ","))}</b>${esc(x.reviews ?? "?")} đánh giá</div>` : ""}</div>
+          <div class="price">${x.total ? `<strong>${money(x.total, x.currency || q.currency || "VND")}</strong>` : `<span class="sub">Chưa có giá</span>`}</div>
+          <div class="xwhy">✕ ${esc(x.why || "")}${failed.length ? `<div class="chips">${failed.map(([c, v]) => { const [cls, ic] = CHIP[v.v] || CHIP.unknown; return `<span class="chip ${cls}" title="${esc(v.why || "")}">${ic} ${esc(c.label)}</span>`; }).join("")}</div>` : ""}</div>
+          <div class="act">${href ? `<a class="open ghost" href="${esc(href)}" target="_blank" rel="noopener">${x.href ? "Xem trang" : "Tìm trên Booking"} ↗</a>` : ""}</div></li>`; }).join("")}</ul></details>`;
     }
     $("#resBody").innerHTML = html;
+    $("#tiles").querySelector(".exlink")?.addEventListener("click", () => { const d = $("#exclBox"); if (d) { d.open = true; d.scrollIntoView({ behavior: "smooth", block: "start" }); } });
   }
 
   // ---------- form ----------
@@ -892,7 +916,10 @@ ${[...blocks].map(([id, s]) => `${id}: ${s}`).join("\n")}`);
     for (const x of (Array.isArray(list) ? list : [])) {
       if (!x || !blocks.has(String(x.id))) continue;
       const name = x.title || x.kind || "Chỗ ở Airbnb";
-      if (x.roomsOk === false) { excluded.push({ name: "Airbnb · " + name, why: x.why || "Không đủ phòng ngủ" }); continue; }
+      const abHref = `https://www.airbnb.com.vn/rooms/${x.id}?adults=${q.adults}${q.children ? `&children=${q.children}` : ""}&check_in=${q.checkin}&check_out=${q.checkout}`;
+      const abRoom = [x.kind, x.bedrooms ? `${x.bedrooms} phòng ngủ` : "", x.beds].filter(Boolean).join(" · ");
+      const abX = why => xOf({ name, href: abHref, total: x.total || null, currency: q.currency || "VND", room: abRoom, score: x.rating, reviews: x.reviews }, why, "Airbnb");
+      if (x.roomsOk === false) { excluded.push(abX(x.why || "Không đủ phòng ngủ")); continue; }
       if (!x.total) continue;
       const c = {};
       for (const k of crit) {
@@ -904,7 +931,7 @@ ${[...blocks].map(([id, s]) => `${id}: ${s}`).join("\n")}`);
         if (k.k.startsWith("am_")) c[k.k] = { v: "unknown", why: "Thẻ Airbnb không ghi tiện ích, xem trang chỗ ở" };
         if (k.k === "near") c.near = { v: "unknown", why: `Airbnb tìm quanh ${q.near}, không ghi khoảng cách` };
       }
-      if (c.extra?.v === "no") { excluded.push({ name: "Airbnb · " + name, why: "Không đạt: " + (c.extra.why || q.extra) }); continue; }
+      if (c.extra?.v === "no") { excluded.push(abX("Không đạt: " + (c.extra.why || q.extra))); continue; }
       if (q.budget && x.total > q.budget) continue;
       ok.push({ source: "Airbnb", name, room: [x.kind, x.bedrooms ? `${x.bedrooms} phòng ngủ` : "", x.beds].filter(Boolean).join(" · "),
         total: x.total, currency: q.currency || "VND", score: x.rating, reviews: x.reviews, criteria: c,
@@ -976,9 +1003,9 @@ Văn bản trang:
     const arr = Array.isArray(listed) ? listed : [];
     const byName = new Map(links.map(l => [l.name.toLowerCase(), l]));
     const cands = arr.filter(x => x && x.name).map(x => ({ ...x, href: (byName.get(nfc(x.name).trim().toLowerCase()) || links.find(l => nfc(x.name).toLowerCase().includes(l.name.toLowerCase())) || {}).href }));
-    for (const c of cands) if (c.roomsOk === false) excluded.push({ name: c.name, why: c.why || "Không đúng số phòng" });
+    for (const c of cands) if (c.roomsOk === false) excluded.push(xOf(c, c.why || "Không đúng số phòng"));
     let pick = cands.filter(c => c.roomsOk !== false && c.href);
-    if (q.budget) for (const c of pick) if (c.total && c.total > q.budget * 1.15) excluded.push({ name: c.name, why: `Vượt ngân sách (${money(c.total, c.currency)})` });
+    if (q.budget) for (const c of pick) if (c.total && c.total > q.budget * 1.15) excluded.push(xOf(c, `Vượt ngân sách (${money(c.total, c.currency)})`));
     if (q.budget) pick = pick.filter(c => !c.total || c.total <= q.budget * 1.15);
     pick = pick.sort((a, b) => (a.total ?? Infinity) - (b.total ?? Infinity)).slice(0, q.depth);
     step("read", "done", `${cands.length} chỗ · kiểm tra ${pick.length}`);
@@ -1000,7 +1027,7 @@ Văn bản trang:
         if (isFatal(e)) throw e;
         detailFails++;
         log(`Bỏ qua ${c.name}: ${e?.userMsg || e?.code || e?.message}`);
-        excluded.push({ name: c.name, why: "Không mở được trang chi tiết" });
+        excluded.push(xOf(c, "Không mở được trang chi tiết"));
         if (detailFails >= 3 && !details.length) throw srcFail("Booking chặn mở trang chi tiết");
       }
     }
@@ -1022,15 +1049,15 @@ ${details.map(d => `### id: ${d.id} | ${d.c.name} | từ trang kết quả: ${d.
     const ok = [];
     for (const d of details) {
       const v = vmap.get(d.id);
-      if (!v) { excluded.push({ name: d.c.name, why: "Claude không chấm được chỗ này" }); continue; }
+      if (!v) { excluded.push(xOf(d.c, "Claude không chấm được chỗ này")); continue; }
       const row = { source: "Booking", name: d.c.name, room: v.room || d.c.room, total: v.total ?? d.c.total, currency: v.currency || d.c.currency || q.currency || "VND", score: d.c.score, reviews: d.c.reviews, href: d.c.href, criteria: v.criteria || {}, note: v.note || "",
         dist: d.c.dist == null || d.c.dist === "" || isNaN(+d.c.dist) ? null : +d.c.dist, distLabel: d.c.distLabel || "" };
       if (q.near && q.radius) row.criteria.near = row.dist == null ? { v: "unknown", why: "Thẻ không ghi khoảng cách" }
         : row.dist * 1000 <= q.radius ? { v: "yes", why: `Cách ${fmtDist(row.dist)} ${row.distLabel}` } : { v: "no", why: `Cách ${fmtDist(row.dist)} ${row.distLabel}` };
       const bad = crit.find(c => row.criteria[c.k]?.v === "no");
-      if (v.capacity === "no") excluded.push({ name: row.name, why: "Phòng không đủ chỗ cho cả nhóm" });
-      else if (bad) excluded.push({ name: row.name, why: `Không đạt: ${bad.label}${row.criteria[bad.k].why ? " (" + row.criteria[bad.k].why + ")" : ""}` });
-      else if (q.budget && row.total && row.total > q.budget) excluded.push({ name: row.name, why: `Vượt ngân sách (${money(row.total, row.currency)})` });
+      if (v.capacity === "no") excluded.push(xOf(row, "Phòng không đủ chỗ cho cả nhóm"));
+      else if (bad) excluded.push(xOf(row, `Không đạt: ${bad.label}${row.criteria[bad.k].why ? " (" + row.criteria[bad.k].why + ")" : ""}`));
+      else if (q.budget && row.total && row.total > q.budget) excluded.push(xOf(row, `Vượt ngân sách (${money(row.total, row.currency)})`));
       else ok.push(row);
     }
     step("judge", "done", `${ok.length} chỗ đạt`);
@@ -1160,6 +1187,7 @@ ${details.map(d => `### id: ${d.id} | ${d.c.name} | từ trang kết quả: ${d.
     const lines = [`Tìm phòng: ${q.place}, ${fmtDate(q.checkin)} → ${fmtDate(q.checkout)}, ${q.adults} người lớn${q.children ? ` + ${q.children} trẻ` : ""}, ${q.rooms} phòng`, ...(srcLine ? ["Nguồn: " + srcLine] : []), "",
       ["#", "Chỗ ở", "Tổng tiền", "Agoda từ /phòng/đêm", ...crit.map(c => c.label), "Link"].join(" | ")];
     current.results.slice().sort(SORTS[sortBy] || SORTS.price_asc).forEach((r, i) => lines.push([i + 1, `${r.source || "Booking"}: ${r.name}${r.dist != null ? ` (cách ${fmtDist(r.dist)} ${r.distLabel || ""})` : ""}`, money(r.total, r.currency), r.agoda?.from ? money(r.agoda.from, r.agoda.cur || "VND") : "—", ...crit.map(c => ({ yes: "Có", no: "Không" }[r.criteria?.[c.k]?.v] || "Chưa rõ")), r.href || ""].join(" | ")));
+    if (current.excluded?.length) { lines.push("", "Đã loại:"); current.excluded.forEach(x => lines.push([`${x.source || "Booking"}: ${String(x.name).replace(/^Airbnb · /, "")}`, x.total ? money(x.total, x.currency || q.currency || "VND") : "—", x.why || "", xHref(x, q)].join(" | "))); }
     try { await navigator.clipboard.writeText(lines.join("\n")); $("#copy").textContent = "Đã sao chép"; }
     catch { const r = document.createRange(); r.selectNodeContents($("#resBody")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); $("#copy").textContent = "Đã chọn bảng, nhấn Ctrl/Cmd+C"; }
     setTimeout(() => $("#copy").textContent = "Sao chép bảng", 2500);
