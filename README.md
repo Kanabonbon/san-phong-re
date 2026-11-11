@@ -1,4 +1,10 @@
-# Săn Phòng Rẻ
+# Săn Phòng Rẻ · Stay Hunter
+
+**🇬🇧 English:** this repository also contains **Stay Hunter**, the English version of the plugin. Install it with `claude plugin marketplace add Kanabonbon/san-phong-re` then `claude plugin install stay-hunter@san-phong-re`. Full guide: [plugins/stay-hunter/README.md](plugins/stay-hunter/README.md).
+
+**🇻🇳 Tiếng Việt:** bản tiếng Việt là plugin `san-phong-re`, hướng dẫn bên dưới.
+
+---
 
 Trợ lý tìm **khách sạn, nhà nghỉ, homestay có tổng chi phí rẻ nhất** đúng số người, số phòng, ngày ở và yêu cầu của bạn — chạy trong Claude.
 

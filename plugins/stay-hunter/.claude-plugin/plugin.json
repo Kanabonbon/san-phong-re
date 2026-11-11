@@ -1,0 +1,10 @@
+{
+  "name": "stay-hunter",
+  "version": "1.0.0",
+  "description": "Find the hotel, guesthouse or homestay with the lowest total cost for your exact group, rooms, dates and requirements (24-hour front desk, prepay or pay at property, cash or card, location, amenities). Searches Booking.com and Airbnb with an Agoda price check. Includes a form-based dashboard for the Claude desktop app.",
+  "author": {
+    "name": "Kanabonbon"
+  },
+  "license": "MIT",
+  "keywords": ["hotel", "accommodation", "booking", "airbnb", "agoda", "travel", "cheap", "homestay"]
+}
