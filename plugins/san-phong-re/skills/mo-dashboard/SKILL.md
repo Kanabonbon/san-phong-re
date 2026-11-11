@@ -1,6 +1,6 @@
 ---
 name: mo-dashboard
-description: Mở, tạo hoặc cập nhật dashboard "Săn Phòng Rẻ" — trang có form nhập điểm đến, ngày, số người, số phòng, tiền tệ, vị trí, tiện ích, yêu cầu thanh toán, rồi tự tìm chỗ ở rẻ nhất trên Booking.com và Airbnb, so giá Agoda. Dùng khi người dùng nói "mở dashboard Săn Phòng Rẻ", "tạo dashboard tìm khách sạn", "cập nhật dashboard Săn Phòng Rẻ", hoặc muốn tìm phòng bằng form thay vì chat.
+description: Mở, tạo hoặc cập nhật dashboard "Săn Phòng Rẻ" — trang có form nhập điểm đến, ngày, số người, số phòng, tiền tệ, vị trí, tiện ích, yêu cầu thanh toán, rồi tự tìm chỗ ở rẻ nhất trên Booking.com và Airbnb, so giá Agoda. Dùng khi người dùng nói "mở dashboard Săn Phòng Rẻ", "tạo dashboard tìm khách sạn", "cập nhật dashboard Săn Phòng Rẻ", hoặc muốn tìm phòng bằng form thay vì chat. Trang có nút chọn ngôn ngữ VI | EN. Also: "open the hotel search dashboard", "open the Stay Hunter dashboard".
 ---
 
 # Mở / cập nhật dashboard Săn Phòng Rẻ
@@ -34,9 +34,12 @@ Mã trang nằm ở `dashboard/index.html`, cạnh file SKILL.md này (trong th�
    - Link trang và lời khuyên **ghim** trang để mở nhanh (chỉ ghim khi họ đồng ý).
    - Lần đầu bấm **Tìm**, app sẽ hỏi quyền dùng trình duyệt và quyền hỏi Claude: chọn **Cho phép**.
    - Mỗi lượt tìm mất khoảng 1–3 phút và dùng hạn mức Claude của chính họ.
+   - Bấm **EN** ở góc trên bên phải nếu muốn hiển thị tiếng Anh.
    - Agent chỉ tìm và so sánh, **không đặt phòng**.
 
 ## Lưu ý
+
+- Trang có nút **VI | EN** ở góc trên bên phải; người dùng tự chọn ngôn ngữ hiển thị (form và kết quả giữ nguyên khi đổi). Nếu người dùng nói tiếng Anh, trả lời họ bằng tiếng Anh và nhắc nút EN.
 
 - Không thêm, bớt hay sửa capability nào ngoài danh sách trên.
 - Không chia sẻ trang công khai thay người dùng; việc chia sẻ do họ tự làm từ menu Share.

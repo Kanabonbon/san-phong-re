@@ -250,7 +250,20 @@ a.open.ghost:hover{background:var(--brand-soft);filter:none}
 .legend span{display:inline-flex;align-items:center;gap:5px}
 .legend i{width:9px;height:9px;border-radius:50%}
 .foot p{margin:0;font-size:.76rem;color:var(--muted);flex:1 1 360px}
+
+/* language switch */
+.tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.lang{display:inline-flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16)}
+.lang button{border:0;background:none;color:var(--on-hero-muted);font:inherit;font-size:.74rem;font-weight:800;letter-spacing:.06em;padding:5px 11px;border-radius:999px;cursor:pointer}
+.lang button:hover{color:var(--on-hero)}
+.lang button[aria-pressed="true"]{background:var(--gold);color:#2b1c00}
+.lang button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+html[lang="en"] details.filters>summary::after{content:"Collapse ▴"}
+html[lang="en"] details.filters:not([open])>summary::after{content:"Show filters ▾"}
 </style>
+
+<div id="spr-root"></div>
+<template id="spr-vi">
 
 <div class="wrap">
   <form id="form" novalidate>
@@ -274,7 +287,7 @@ a.open.ghost:hover{background:var(--brand-soft);filter:none}
             <p class="kicker">Trợ lý tìm chỗ ở thông minh</p>
           </div>
         </div>
-        <span class="env" id="env"><i></i><span id="envText">Đang kết nối với app Claude…</span></span>
+        <div class="tools"><span class="env" id="env"><i></i><span id="envText">Đang kết nối với app Claude…</span></span><div class="lang" role="group" aria-label="Ngôn ngữ / Language"><button type="button" data-lang="vi" title="Tiếng Việt">VI</button><button type="button" data-lang="en" title="English">EN</button></div></div>
       </div>
       <p class="lead">Tìm chỗ ở <b>rẻ nhất</b> đúng số người, số phòng và yêu cầu của bạn trên <b>Booking.com</b> và <b>Airbnb</b>, so giá với <b>Agoda</b>.</p>
 
@@ -421,8 +434,182 @@ a.open.ghost:hover{background:var(--brand-soft);filter:none}
   </section>
 </div>
 
+</template>
+<template id="spr-en">
+
+<div class="wrap">
+  <form id="form" novalidate>
+    <section class="hero">
+      <div class="top">
+        <div class="brand">
+          <svg viewBox="0 0 52 52" aria-hidden="true">
+            <defs>
+              <linearGradient id="lgGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8dc8f"/><stop offset=".55" stop-color="#e3a72f"/><stop offset="1" stop-color="#b9780f"/></linearGradient>
+              <linearGradient id="lgNavy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b3677"/><stop offset="1" stop-color="#0a1838"/></linearGradient>
+            </defs>
+            <rect x="1" y="1" width="50" height="50" rx="15" fill="url(#lgGold)"/>
+            <rect x="3.5" y="3.5" width="45" height="45" rx="12.5" fill="none" stroke="#fff6dc" stroke-opacity=".55"/>
+            <path d="M26 10.5c-7.2 0-13 5.6-13 12.6 0 9.4 13 19.9 13 19.9s13-10.5 13-19.9c0-7-5.8-12.6-13-12.6z" fill="url(#lgNavy)"/>
+            <path d="M19.8 24.2 26 19l6.2 5.2v6.6H19.8z" fill="none" stroke="#f8dc8f" stroke-width="1.9" stroke-linejoin="round"/>
+            <path d="M24.2 30.8v-3.6h3.6v3.6" fill="none" stroke="#f8dc8f" stroke-width="1.9" stroke-linejoin="round"/>
+            <path d="M26 13.6l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z" fill="#f8dc8f"/>
+          </svg>
+          <div>
+            <h1>Stay <span>Hunter</span></h1>
+            <p class="kicker">Smart accommodation finder</p>
+          </div>
+        </div>
+        <div class="tools"><span class="env" id="env"><i></i><span id="envText">Connecting to the Claude app…</span></span><div class="lang" role="group" aria-label="Ngôn ngữ / Language"><button type="button" data-lang="vi" title="Tiếng Việt">VI</button><button type="button" data-lang="en" title="English">EN</button></div></div>
+      </div>
+      <p class="lead">Find the <b>cheapest</b> stay that fits your group, your rooms and your requirements on <b>Booking.com</b> and <b>Airbnb</b>, with an <b>Agoda</b> price check.</p>
+
+      <div class="bar">
+        <label class="place" for="place">Destination<input id="place" required placeholder="Da Lat, Bali, Sydney…" autocomplete="off"></label>
+        <label class="d" for="checkin">Check-in<input id="checkin" type="date" required></label>
+        <label class="d" for="checkout">Check-out<input id="checkout" type="date" required></label>
+        <label class="n" for="adults">Adults<input id="adults" type="number" min="1" max="30" value="2"></label>
+        <label class="n" for="children">Children<input id="children" type="number" min="0" max="10" value="0"></label>
+        <label class="n" for="rooms">Rooms<input id="rooms" type="number" min="1" max="10" value="1"></label>
+        <label class="c" for="currency">Currency<select id="currency"></select></label>
+        <div class="go">
+          <button type="submit" class="primary" id="go">Find cheapest stay</button>
+          <button type="button" class="ghost" id="stop" hidden>Stop</button>
+        </div>
+      </div>
+      <div class="sel" id="selWrap">
+        <span class="sel-l">Criteria</span>
+        <ul id="selChips"></ul>
+        <button type="button" class="sel-clear" id="clearAll">Clear all filters</button>
+      </div>
+      <div class="meta">
+        <span class="nights" id="nights"></span>
+        <label for="childAges" id="agesWrap" hidden>Child ages <input id="childAges" inputmode="numeric" placeholder="e.g. 6, 9"></label>
+        <p class="formerr" id="formErr" hidden></p>
+      </div>
+    </section>
+
+    <details class="card filters" open>
+      <summary>Filters & requirements <small>Every choice here is added to the search</small></summary>
+      <div class="fgrid">
+        <div class="col">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Location & amenities</h3>
+          <div class="two">
+            <label class="f" for="near">Near a place<input id="near" autocomplete="off" placeholder="e.g. Da Lat Market"></label>
+            <label class="f" for="radius">Within
+              <select id="radius">
+                <option value="">No limit</option>
+                <option value="1000">1 km</option>
+                <option value="3000">3 km</option>
+                <option value="5000">5 km</option>
+              </select>
+            </label>
+          </div>
+          <div class="grp"><b>Must-have amenities</b><div class="tags" id="amenTags"></div></div>
+        </div>
+
+        <div class="col">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg>Payment & requirements</h3>
+          <div class="tags">
+            <label class="tog"><input id="frontdesk" type="checkbox"><span>24h front desk</span></label>
+            <label class="tog"><input id="freeCancel" type="checkbox"><span>Free cancellation</span></label>
+          </div>
+          <div class="grp" role="radiogroup" aria-label="When to pay"><b>When to pay</b>
+            <div class="seg">
+              <label><input type="radio" name="payTiming" value="any" checked><span>Any</span></label>
+              <label><input type="radio" name="payTiming" value="at_property"><span>Pay at property</span></label>
+              <label><input type="radio" name="payTiming" value="prepay"><span>Prepay</span></label>
+            </div>
+          </div>
+          <div class="grp" role="radiogroup" aria-label="Payment method"><b>Payment method</b>
+            <div class="seg">
+              <label><input type="radio" name="payMethod" value="any" checked><span>Any</span></label>
+              <label><input type="radio" name="payMethod" value="cash"><span>Cash</span></label>
+              <label><input type="radio" name="payMethod" value="card"><span>Credit card</span></label>
+            </div>
+          </div>
+          <label class="f" for="budget">Max budget for the whole stay
+            <span class="money-in"><input id="budget" type="text" inputmode="decimal" autocomplete="off" placeholder="No limit"><b id="budgetCur">USD</b></span>
+          </label>
+        </div>
+
+        <div class="col">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Sources & options</h3>
+          <div class="tags">
+            <label class="tog"><input id="srcBooking" type="checkbox" checked disabled><span>Booking.com</span></label>
+            <label class="tog"><input id="srcAirbnb" type="checkbox" checked><span>Airbnb</span></label>
+            <label class="tog"><input id="compare" type="checkbox" checked><span>Agoda price check</span></label>
+          </div>
+          <label class="f" for="extra">Other requirement <span class="sub">e.g. near the night market, lake view</span><input id="extra" autocomplete="off"></label>
+          <label class="f" for="depth">Places to check in detail
+            <select id="depth">
+              <option value="4">4 places · fast</option>
+              <option value="6" selected>6 places · balanced</option>
+              <option value="8">8 places · thorough</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </details>
+  </form>
+
+  <div class="modal" id="confirm" hidden>
+    <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+      <p class="mkick">Confirm before searching</p>
+      <h2 id="cfTitle">Are these the criteria you want to search for?</h2>
+      <dl id="cfList"></dl>
+      <p class="cfnote" id="cfNote" hidden></p>
+      <div class="mact">
+        <button type="button" class="ghost" id="cfEdit">No, let me edit</button>
+        <button type="button" class="primary" id="cfOk">Yes, search now</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="card run" id="runPanel" hidden>
+    <ol class="steps" id="steps">
+      <li data-s="open"><b>Open Booking</b><small>waiting</small></li>
+      <li data-s="read"><b>Read results</b><small>waiting</small></li>
+      <li data-s="detail"><b>Check details</b><small>waiting</small></li>
+      <li data-s="judge"><b>Score</b><small>waiting</small></li>
+      <li data-s="airbnb"><b>Airbnb</b><small>waiting</small></li>
+      <li data-s="agoda"><b>Agoda price check</b><small>waiting</small></li>
+    </ol>
+    <p class="msg err" id="runErr" hidden></p>
+    <details class="log"><summary>Detailed log</summary><pre id="log"></pre></details>
+  </section>
+
+  <section class="card res" id="resPanel">
+    <div class="reshead">
+      <h2 id="resTitle">Results</h2>
+      <span class="badge" id="exampleBadge" hidden>Example · test run Nov 11, 2026</span>
+      <div class="tools">
+        <label class="sortby" for="sortBy">Sort
+          <select id="sortBy">
+            <option value="price_asc">Price: low → high</option>
+            <option value="price_desc">Price: high → low</option>
+            <option value="near">Closest to location</option>
+            <option value="rating">Highest rated</option>
+            <option value="match">Most requirements met</option>
+          </select>
+        </label>
+        <button type="button" class="ghost" id="copy">Copy table</button>
+      </div>
+    </div>
+    <ul class="query" id="resQuery"></ul>
+    <div class="srcs" id="resSources" hidden></div>
+    <div class="tiles" id="tiles"></div>
+    <div id="resBody"></div>
+    <div class="foot">
+      <div class="legend"><span><i style="background:var(--ok)"></i>Yes: stated on the page</span><span><i style="background:var(--warn)"></i>Unclear: ask the property</span><span><i style="background:var(--bad)"></i>No</span></div>
+      <p>Booking and Airbnb prices are totals for the whole stay, including taxes and fees. Airbnb is always paid online through Airbnb and is usually self check-in. Agoda prices are the lowest price per room per night, before taxes and fees. Prices change constantly, so check again before booking. The agent only searches and compares; it never books.</p>
+    </div>
+  </section>
+</div>
+
+</template>
 <script>
-(() => {
+window.__SPR_APPS = window.__SPR_APPS || {};
+window.__SPR_APPS.vi = () => {
   const $ = s => document.querySelector(s);
   const SERVER = "host:claude_browser";
   const STORE = "san-phong-re:v1";
@@ -760,7 +947,7 @@ a.open.ghost:hover{background:var(--brand-soft);filter:none}
     $("#form").scrollIntoView({ behavior: "smooth", block: "start" });
   });
   $("#confirm").addEventListener("click", ev => { if (ev.target.id === "confirm") $("#cfEdit").click(); });
-  document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !$("#confirm").hidden) $("#cfEdit").click(); });
+  __sprListen(document, "keydown", ev => { if (ev.key === "Escape" && !$("#confirm").hidden) $("#cfEdit").click(); });
   $("#form").addEventListener("input", () => { sync(); const s = store.get() || {}; s.draft = readForm().q; store.set(s); });
   $("#form").addEventListener("change", sync);
 
@@ -1201,8 +1388,830 @@ ${details.map(d => `### id: ${d.id} | ${d.c.name} | từ trang kết quả: ${d.
   // ---------- boot ----------
   $("#currency").innerHTML = CURRENCIES.map(([c, name]) => `<option value="${c}">${c} · ${esc(name)}</option>`).join("");
   $("#amenTags").innerHTML = AMEN.map(a => `<label class="tog"><input type="checkbox" name="amen" value="${a.k}" id="am_${a.k}"><span>${esc(a.label)}</span></label>`).join("");
-  const saved = store.get();
+  const saved = window.__sprState || store.get(); window.__sprState = null;
+  window.__spr = { busy: () => running, snapshot: () => ({ draft: readForm().q, last: current && !current.example ? current : null }) };
   fillForm(saved?.draft || EXQ);
   render(saved?.last || EXAMPLE);
+};
+window.__SPR_APPS.en = () => {
+  const $ = s => document.querySelector(s);
+  const SERVER = "host:claude_browser";
+  const STORE = "san-phong-re:v1";
+  const DEFAULT_CUR = "USD";
+  // Pages are read in Vietnamese (the tested parsing path); links shown to the user open the English sites
+  const enLink = u => String(u || "").replace(".vi.html", ".en-gb.html").replace("www.airbnb.com.vn", "www.airbnb.com").replace("/vi-vn/", "/en-us/");
+  const STOP = { code: "stopped" };
+  let mcp = null, sample = null, tabId = null, stopped = false, running = false, sampleCtl = null;
+  let current = null;
+
+  // ---------- helpers ----------
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const nfc = s => String(s ?? "").normalize("NFC");
+  // Money: comma-grouped digits + ISO code after, e.g. "1,690,000 VND", "45.50 USD"
+  const CURRENCIES = [["USD", "US dollar"], ["EUR", "Euro"], ["GBP", "British pound"], ["AUD", "Australian dollar"], ["SGD", "Singapore dollar"],
+    ["JPY", "Japanese yen"], ["KRW", "Korean won"], ["CNY", "Chinese yuan"], ["THB", "Thai baht"], ["VND", "Vietnamese dong"]];
+  const ZERO_DEC = new Set(["VND", "JPY", "KRW"]);
+  const money = (n, cur) => {
+    if (n == null || n === "" || isNaN(n)) return "—";
+    const c = cur || "VND";
+    const dec = ZERO_DEC.has(c) || Number.isInteger(+n) ? 0 : 2;
+    return new Intl.NumberFormat("en-US", { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(+n) + " " + c;
+  };
+  // Prices read from vi-VN pages use "." for thousands and "," for decimals
+  const viNum = s => { const m = String(s).match(/\d[\d.,]*/); return m ? parseFloat(m[0].replace(/\./g, "").replace(",", ".")) : null; };
+  const nightsOf = q => Math.round((new Date(q.checkout) - new Date(q.checkin)) / 864e5);
+  const fmtDate = d => { const [y, m, dd] = d.split("-").map(Number); return new Date(y, m - 1, dd).toLocaleDateString("en-US", { month: "short", day: "numeric" }); };
+  const store = { get() { try { return JSON.parse(localStorage.getItem(STORE) || "null"); } catch { return null; } },
+                  set(v) { try { localStorage.setItem(STORE, JSON.stringify(v)); } catch {} } };
+  const log = t => { const el = $("#log"); el.textContent += `[${new Date().toLocaleTimeString("en-US")}] ${t}\n`; el.scrollTop = el.scrollHeight; };
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const plain = s => nfc(s).normalize("NFD").replace(/\p{M}/gu, "").replace(/đ/gi, "d").toLowerCase();
+  const radio = name =>(document.querySelector(`input[name="${name}"]:checked`) || {}).value || "any";
+  // Amenities: label, Booking filter code (verified 11/2026; "" = no filter, checked on the detail page only), what Claude checks
+  const AMEN = [
+    { k: "parking", label: "Parking", f: "hotelfacility=2", ask: "Has parking (for cars)" },
+    { k: "wifi", label: "Free WiFi", f: "hotelfacility=107", ask: "Has free WiFi" },
+    { k: "breakfast", label: "Breakfast", f: "mealplan=1", ask: "The chosen rate includes breakfast" },
+    { k: "kitchen", label: "Kitchen", f: "mealplan=999", ask: "Has a kitchen or kitchenette for self-catering" },
+    { k: "bath", label: "Private bathroom", f: "roomfacility=38", ask: "The room has a private bathroom" },
+    { k: "ac", label: "Air conditioning", f: "", ask: "The room has air conditioning" },
+    { k: "elevator", label: "Elevator", f: "accessible_room_facilities=132", ask: "Has an elevator" },
+    { k: "pool", label: "Pool", f: "hotelfacility=433", ask: "Has a swimming pool" },
+    { k: "pets", label: "Pets allowed", f: "", ask: "Pets are allowed" }
+  ];
+  const fmtDist = d => d == null || isNaN(d) ? "" : d < 1 ? `${Math.round(d * 1000)} m` : `${(Math.round(d * 10) / 10).toString()} km`;
+  const setRadio = (name, v) =>{ const el = document.querySelector(`input[name="${name}"][value="${v}"]`); if (el) el.checked = true; };
+
+  // ---------- example data (real run, 11/11/2026) ----------
+  const bk = (slug, q) => `https://www.booking.com/hotel/vn/${slug}.vi.html?checkin=${q.checkin}&checkout=${q.checkout}&group_adults=${q.adults}&no_rooms=${q.rooms}&group_children=0`;
+  const EXQ = { place: "Da Lat", checkin: "2026-12-20", checkout: "2026-12-22", adults: 4, children: 0, ages: [], rooms: 2,
+                frontdesk: true, payTiming: "at_property", payMethod: "cash", freeCancel: false, budget: null, extra: "", depth: 6, compare: true, airbnb: true, near: "", radius: "", amen: [], currency: "VND" };
+  const ag = (id, from) => ({ from, href: `https://www.agoda.com/vi-vn/accom/property?propertyId=${id}&finalPriceView=1&adults=4&children=0&rooms=2&checkIn=2026-12-20&los=2&currencyCode=VND` });
+  const Y = why => ({ v: "yes", why }), U = why => ({ v: "unknown", why });
+  const EXAMPLE = {
+    example: true, at: "2026-11-11T09:30:00", query: EXQ,
+    sources: [{ name: "Booking.com", status: "ok", count: 6, why: "" },
+              { name: "Airbnb", status: "skip", why: "Airbnb only takes online payment, which doesn't fit pay-at-property / cash" },
+              { name: "Agoda (price check)", status: "ok", count: 2, why: "" }],
+    results: [
+      { name: "TÂM AM Home", room: "2 × Double Room with Private Bathroom", total: 800000, currency: "VND", score: 5.5, reviews: 2, dist: 0.9, distLabel: "from center", href: bk("tam-am-home", EXQ),
+        criteria: { frontdesk: Y("Facilities: 24-hour front desk"), payAt: Y("No prepayment needed"), cash: Y("Payment policy: cash") } },
+      { name: "nhà nghỉ TAM AN", room: "2 × Double Room with Private Bathroom", total: 800000, currency: "VND", score: 9.2, reviews: 4, dist: 0.8, distLabel: "from center", href: bk("nha-nghi-tam-an-xuan-huong-da-lat", EXQ),
+        criteria: { frontdesk: Y("24-hour front desk"), payAt: Y("Pay at the property"), cash: U("only says “No credit card needed”") } },
+      { name: "Đà lạt hotel Tâm An", room: "2 × Standard Double Room with Fan", total: 800000, currency: "VND", score: 8.0, reviews: 3, dist: 0.8, distLabel: "from center", href: bk("da-lat-tam-an", EXQ),
+        criteria: { frontdesk: Y("24-hour front desk"), payAt: Y("Pay at the property"), cash: U("page doesn't list payment methods") } },
+      { name: "Duy Khang Hotel", room: "2 × Standard King Room", total: 880000, currency: "VND", score: 6.3, reviews: 20, href: bk("duy-khang-thanh-pho-da-lat2", EXQ),
+        criteria: { frontdesk: Y("24-hour front desk"), payAt: Y("Pay at the property"), cash: U("page doesn't list payment methods") }, agoda: ag(52524458, 203704) },
+      { name: "Dang Nguyen Guesthouse", room: "2 × Double Room with Private Bathroom", total: 1000000, currency: "VND", score: 9.5, reviews: 58, href: bk("cslt-du-lich-dang-nguyen", EXQ),
+        criteria: { frontdesk: Y("24-hour front desk"), payAt: Y("Pay at the property"), cash: Y("Cash only") } },
+      { name: "Nón Lá Guest House", room: "2 × Queen Room", total: 1000000, currency: "VND", score: 9.4, reviews: 75, href: bk("non-la-guest-house", EXQ),
+        criteria: { frontdesk: Y("24-hour front desk"), payAt: Y("Pay at the property"), cash: Y("Cash only") }, note: "Free cancellation anytime", agoda: ag(44321019, 231481) }
+    ],
+    excluded: [
+      { source: "Booking", name: "Saffron Boutique Hotel", room: "Quadruple Room with Private Bathroom", total: 1091719, currency: "VND", score: 9.9, reviews: 18, href: bk("s-boutique", EXQ), why: "1 room for 4 people, not 2 rooms" },
+      { source: "Booking", name: "Khách sạn mini Khang Thịnh", room: "Quadruple Room with Private Bathroom", total: 1000000, currency: "VND", score: 9.2, reviews: 19, href: bk("khach-san-mini-khang-thinh", EXQ), why: "1 room for 4 people, not 2 rooms" },
+      { name: "Mina Thien Ha", why: "Bunk-bed room" },
+      { name: "Socialhouse Dalat", why: "Dormitory" }
+    ]
+  };
+
+  // ---------- criteria ----------
+  function criteriaFor(q) {
+    const c = [];
+    if (q.frontdesk) c.push({ k: "frontdesk", label: "24h front desk", ask: "Has a 24-hour front desk / reception" });
+    if (q.payTiming === "at_property") c.push({ k: "payAt", label: "Pay at property", ask: "The chosen rate needs no prepayment; you pay at the property" });
+    if (q.payTiming === "prepay") c.push({ k: "prepay", label: "Prepay", ask: "Can be paid in advance (online, when booking)" });
+    if (q.payMethod === "cash") c.push({ k: "cash", label: "Cash", ask: "The property accepts cash" });
+    if (q.payMethod === "card") c.push({ k: "card", label: "Credit card", ask: "The property accepts credit cards (Visa, Mastercard…). If the page says cash only, it is no" });
+    if (q.freeCancel) c.push({ k: "cancel", label: "Free cancellation", ask: "The chosen rate has free cancellation" });
+    if (q.extra) c.push({ k: "extra", label: q.extra.length > 22 ? "Other requirement" : q.extra, ask: q.extra });
+    for (const a of AMEN) if ((q.amen || []).includes(a.k)) c.push({ k: "am_" + a.k, label: a.label, ask: a.ask });
+    if (q.near && q.radius) c.push({ k: "near", label: `≤ ${q.radius / 1000} km ${q.near}`, ask: "", local: true });
+    return c;
+  }
+  const scoreOf = r => r.score == null ? -1 : r.source === "Airbnb" ? r.score * 2 : r.score;
+  const SORTS = {
+    price_asc: (a, b) => (a.total ?? Infinity) - (b.total ?? Infinity) || unknownCount(a) - unknownCount(b),
+    price_desc: (a, b) => (b.total ?? -Infinity) - (a.total ?? -Infinity),
+    near: (a, b) => (a.dist ?? Infinity) - (b.dist ?? Infinity) || (a.total ?? Infinity) - (b.total ?? Infinity),
+    rating: (a, b) => scoreOf(b) - scoreOf(a) || (a.total ?? Infinity) - (b.total ?? Infinity),
+    match: (a, b) => unknownCount(a) - unknownCount(b) || (a.total ?? Infinity) - (b.total ?? Infinity)
+  };
+  let sortBy = "price_asc"; // default report order: cheapest first
+  const unknownCount = r => Object.values(r.criteria || {}).filter(x => x.v !== "yes").length;
+  function rank(list) {
+    return list.slice().sort((a, b) => {
+      const ta = a.total ?? Infinity, tb = b.total ?? Infinity;
+      if (isFinite(ta) && isFinite(tb) && Math.abs(ta - tb) / Math.min(ta, tb) < 0.05) {
+        const d = unknownCount(a) - unknownCount(b); if (d) return d;
+      }
+      return ta - tb;
+    });
+  }
+
+  // ---------- rendering ----------
+  function queryChips(q) {
+    const chips = [`<li class="place">${esc(q.place)}</li>`, `<li>${fmtDate(q.checkin)} → ${fmtDate(q.checkout)} · ${nightsOf(q)} nights</li>`,
+      `<li>${q.adults} adults${q.children ? ` + ${q.children} children` : ""} · ${q.rooms} rooms</li>`];
+    if (q.near && !q.radius) chips.push(`<li>Near ${esc(q.near)}</li>`);
+    criteriaFor(q).forEach(c => chips.push(`<li>${esc(c.label)}</li>`));
+    if (q.budget) chips.push(`<li>≤ ${money(q.budget, q.currency)}</li>`);
+    return chips.join("");
+  }
+  function agodaCell(r, per) {
+    const a = r.agoda; if (!a) return "";
+    if (!a.from) return `<div class="cmp"><span class="src">Agoda</span><span class="na">${esc(a.miss || "No price for these dates")}</span></div>`;
+    const cheaper = per && a.from < per * 0.85;
+    return `<div class="cmp"><span class="src">Agoda</span><a href="${esc(enLink(a.href))}" target="_blank" rel="noopener">from ${money(a.from, a.cur || "VND")} / room / night ↗</a><span class="${cheaper ? "cheaper" : "na"}">${cheaper ? "May be cheaper than Booking, check it" : "before taxes & fees"}</span></div>`;
+  }
+  // excluded stays keep their price, room and link so they can still be opened
+  const xOf = (c, why, source) => ({ source: source || c.source || "Booking", name: c.name, href: c.href || "", total: c.total ?? null, currency: c.currency || "",
+    room: c.room || "", score: c.score ?? null, reviews: c.reviews ?? null, criteria: c.criteria || null, why });
+  const xHref = (x, q) => x.href || ((x.source || "Booking") === "Booking" && q ? `https://www.booking.com/searchresults.vi.html?ss=${encodeURIComponent(String(x.name).replace(/^Airbnb · /, "") + ", " + q.place)}&checkin=${q.checkin}&checkout=${q.checkout}&group_adults=${q.adults}&no_rooms=${q.rooms}&group_children=${q.children || 0}` : "");
+  const CHIP = { yes:["yes", "✓"], unknown: ["unknown", "?"], no: ["no", "✕"] };
+  function render(data) {
+    current = data;
+    const q = data.query, crit = criteriaFor(q), n = nightsOf(q);
+    const R = data.results.slice().sort(SORTS[sortBy] || SORTS.price_asc);
+    $("#sortBy").value = sortBy;
+    $("#exampleBadge").hidden = !data.example;
+    $("#resTitle").textContent = R.length ? "Stays that match" : "No stays match yet";
+    $("#resQuery").innerHTML = queryChips(q);
+    const S = data.sources || [];
+    $("#resSources").hidden = !S.length;
+    $("#resSources").innerHTML = S.length ? `<b>Data sources</b>` + S.map(s => {
+      const ic = { ok: "✓", fail: "✕", skip: "–" }[s.status] || "?";
+      const detail = s.status === "ok" ? `${s.count ?? 0} stays${s.why ? " · " + s.why : ""}` : s.why;
+      return `<span class="sv ${esc(s.status)}" title="${esc(s.why || "")}"><i>${ic}</i>${esc(s.name)}${detail ? ` <small>· ${esc(detail)}</small>` : ""}</span>`;
+    }).join("") : "";
+    const when = new Date(data.at);
+    const best = R.slice().sort(SORTS.price_asc)[0];
+    const nearest = R.filter(r => r.dist != null).sort(SORTS.near)[0];
+    $("#tiles").innerHTML = R.length ? `
+      <div class="t best"><span>Cheapest · ${n} nights × ${q.rooms} rooms</span><strong>${money(best.total, best.currency)}</strong><small>${esc(best.name)}</small></div>
+      ${nearest ? `<div class="t"><span>Closest ${esc(nearest.distLabel || "")}</span><strong>${fmtDist(nearest.dist)}</strong><small>${esc(nearest.name)} · ${money(nearest.total, nearest.currency)}</small></div>` : ""}
+      <div class="t"><span>Matches</span><strong>${R.length}</strong><small>${R.filter(r => !unknownCount(r)).length} meet everything</small></div>
+      <div class="t"><span>Checked at</span><strong>${when.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}</strong><small>${when.toLocaleDateString("en-US")} · ${(data.excluded || []).length ? `<button type="button" class="exlink">${data.excluded.length} excluded</button>` : "0 excluded"}</small></div>` : "";
+    let html = "";
+    if (R.length) {
+      html += `<div class="tablewrap"><table><thead><tr><th>#</th><th>Stay</th><th>Total</th><th>Requirements</th><th></th></tr></thead><tbody>`;
+      R.forEach((r, i) => {
+        const per = r.total ? r.total / (n * q.rooms) : null;
+        const notes = crit.map(c => [c, (r.criteria || {})[c.k]]).filter(([, v]) => !v || v.v !== "yes").map(([c, v]) => `${c.label}: ${v?.why || "not stated on the page"}`);
+        const isBest = r === best;
+        html += `<tr class="${isBest ? "best" : ""}">
+          <td class="rank"><b>${i + 1}</b></td>
+          <td class="name"><div class="hname"><span class="srcb ${r.source === "Airbnb" ? "airbnb" : ""}">${esc(r.source || "Booking")}</span>${esc(r.name)}${isBest ? `<span class="pill">Cheapest</span>` : ""}</div><div class="room">${esc(r.room || "")}</div>
+            ${r.dist != null ? `<div class="dist">${fmtDist(r.dist)} ${esc(r.distLabel || "")}</div>` : ""}
+            ${r.score ? `<div class="score"><b>${r.source === "Airbnb" ? "★ " : ""}${esc(String(r.score))}</b>${esc(r.reviews ?? "?")} reviews</div>` : ""}
+            ${r.note ? `<div class="note">${esc(r.note)}</div>` : ""}</td>
+          <td class="price"><strong>${money(r.total, r.currency)}</strong>${per ? `<small>≈ ${money(per, r.currency)} / room / night</small>` : ""}${agodaCell(r, per)}</td>
+          <td class="req">${crit.length ? `<div class="chips">${crit.map(c => { const v = (r.criteria || {})[c.k] || { v: "unknown" }; const [cls, ic] = CHIP[v.v] || CHIP.unknown;
+              return `<span class="chip ${cls}" title="${esc(v.why || "")}">${ic} ${esc(c.label)}</span>`; }).join("")}</div>${notes.length ? `<p class="why">${esc(notes.join(" · "))}</p>` : ""}` : `<span class="sub">No extra requirements</span>`}</td>
+          <td class="act">${r.href ? `<a class="open" href="${esc(enLink(r.href))}" target="_blank" rel="noopener">View & book ↗</a>` : ""}</td></tr>`;
+      });
+      html += `</tbody></table></div>`;
+    } else {
+      html += `<p class="empty">None of the checked stays meets every requirement. Try removing a requirement, raising the budget, or checking more places.</p>`;
+    }
+    if (data.excluded?.length) {
+      const X = data.excluded.slice().sort((a, b) => (a.total ?? Infinity) - (b.total ?? Infinity));
+      html += `<details class="excl" id="exclBox"><summary>${X.length} excluded stays<small>click to see why and open each one</small></summary><ul class="xlist">${X.map(x => {
+        const href = xHref(x, q), src = String(x.source || (/^Airbnb · /.test(x.name) ? "Airbnb" : "Booking"));
+        const failed = crit.map(c => [c, (x.criteria || {})[c.k]]).filter(([, v]) => v && v.v !== "yes");
+        return `<li class="xrow">
+          <div class="name"><div class="hname"><span class="srcb ${src === "Airbnb" ? "airbnb" : ""}">${esc(src)}</span>${esc(String(x.name).replace(/^Airbnb · /, ""))}</div>${x.room ? `<div class="room">${esc(x.room)}</div>` : ""}
+            ${x.score ? `<div class="score"><b>${src === "Airbnb" ? "★ " : ""}${esc(String(x.score))}</b>${esc(x.reviews ?? "?")} reviews</div>` : ""}</div>
+          <div class="price">${x.total ? `<strong>${money(x.total, x.currency || q.currency || "VND")}</strong>` : `<span class="sub">No price</span>`}</div>
+          <div class="xwhy">✕ ${esc(x.why || "")}${failed.length ? `<div class="chips">${failed.map(([c, v]) => { const [cls, ic] = CHIP[v.v] || CHIP.unknown; return `<span class="chip ${cls}" title="${esc(v.why || "")}">${ic} ${esc(c.label)}</span>`; }).join("")}</div>` : ""}</div>
+          <div class="act">${href ? `<a class="open ghost" href="${esc(enLink(href))}" target="_blank" rel="noopener">${x.href ? "View page" : "Find on Booking"} ↗</a>` : ""}</div></li>`; }).join("")}</ul></details>`;
+    }
+    $("#resBody").innerHTML = html;
+    $("#tiles").querySelector(".exlink")?.addEventListener("click", () => { const d = $("#exclBox"); if (d) { d.open = true; d.scrollIntoView({ behavior: "smooth", block: "start" }); } });
+  }
+
+  // ---------- form ----------
+  function fillForm(q) {
+    $("#place").value = q.place; $("#checkin").value = q.checkin; $("#checkout").value = q.checkout;
+    $("#adults").value = q.adults; $("#children").value = q.children; $("#rooms").value = q.rooms;
+    $("#childAges").value = (q.ages || []).join(", "); $("#frontdesk").checked = !!q.frontdesk; $("#freeCancel").checked = !!q.freeCancel;
+    setRadio("payTiming", q.payTiming); setRadio("payMethod", q.payMethod);
+    $("#currency").value = q.currency || DEFAULT_CUR;
+    $("#budget").value = q.budget ? new Intl.NumberFormat("en-US", { maximumFractionDigits: ZERO_DEC.has(q.currency || "VND") ? 0 : 2 }).format(q.budget) : ""; $("#extra").value = q.extra || ""; $("#depth").value = String(q.depth || 6);
+    $("#compare").checked = q.compare !== false; $("#srcAirbnb").checked = q.airbnb !== false;
+    $("#near").value = q.near || ""; $("#radius").value = q.radius || ""; $("#currency").value = q.currency || DEFAULT_CUR;
+    document.querySelectorAll('input[name="amen"]').forEach(el => { el.checked = (q.amen || []).includes(el.value); });
+    sync();
+  }
+  function readForm() {
+    const q = {
+      place: $("#place").value.trim(), checkin: $("#checkin").value, checkout: $("#checkout").value,
+      adults: +$("#adults").value || 0, children: +$("#children").value || 0, rooms: +$("#rooms").value || 0,
+      ages: $("#childAges").value.split(/[,\s]+/).filter(Boolean).map(Number),
+      frontdesk: $("#frontdesk").checked, payTiming: radio("payTiming"), payMethod: radio("payMethod"),
+      freeCancel: $("#freeCancel").checked, budget: parseFloat($("#budget").value.replace(/,/g, "")) || null, extra: $("#extra").value.trim(), depth: +$("#depth").value,
+      compare: $("#compare").checked, airbnb: $("#srcAirbnb").checked,
+      near: $("#near").value.trim(), radius: +$("#radius").value || "", currency: $("#currency").value || "VND",
+      amen: [...document.querySelectorAll('input[name="amen"]:checked')].map(el => el.value)
+    };
+    if (!q.near) q.radius = "";
+    const errs = [];
+    if (!q.place) errs.push("Enter a destination.");
+    if (!q.checkin || !q.checkout) errs.push("Choose check-in and check-out dates.");
+    else if (nightsOf(q) < 1) errs.push("Check-out must be after check-in.");
+    if (q.adults < 1) errs.push("At least 1 adult is needed.");
+    if (q.rooms < 1) errs.push("At least 1 room is needed.");
+    if (q.rooms > q.adults) errs.push("Rooms can't outnumber adults.");
+    if (q.children && (q.ages.length !== q.children || q.ages.some(a => isNaN(a) || a < 0 || a > 17))) errs.push(`Enter ${q.children} child age(s) (0–17).`);
+    q.ages = q.ages.slice(0, q.children);
+    return { q, errs };
+  }
+  function sync() {
+    const kids = +$("#children").value || 0; $("#agesWrap").hidden = kids < 1;
+    const ci = $("#checkin").value, co = $("#checkout").value;
+    const n = ci && co ? Math.round((new Date(co) - new Date(ci)) / 864e5) : 0;
+    const a = +$("#adults").value || 0, r = +$("#rooms").value || 0;
+    $("#nights").textContent = n > 0 ? `${n} nights · ${a} adults${kids ? ` + ${kids} children` : ""} · ${r} rooms` : "";
+    $("#budgetCur").textContent = $("#currency").value || "VND";
+    renderSel();
+  }
+
+  // ---------- budget box: live comma grouping, unit shown inside the box ----------
+  function fmtBudgetInput() {
+    const el = $("#budget"), cur = $("#currency").value || "VND";
+    const raw = el.value, pos = el.selectionStart ?? raw.length;
+    const keepBefore = raw.slice(0, pos).replace(/[^\d.]/g, "").length;
+    let s = raw.replace(/[^\d.]/g, "");
+    if (ZERO_DEC.has(cur)) s = s.replace(/\./g, "");
+    else { const i = s.indexOf("."); if (i >= 0) s = s.slice(0, i + 1) + s.slice(i + 1).replace(/\./g, "").slice(0, 2); }
+    const [int, dec] = s.split(".");
+    const intOut = int ? BigInt(int).toLocaleString("en-US") : (dec !== undefined ? "0" : "");
+    const out = intOut + (dec !== undefined ? "." + dec : "");
+    if (out === raw) return;
+    el.value = out;
+    let seen = 0, p = 0;
+    while (p < out.length && seen < keepBefore) { if (/[\d.]/.test(out[p])) seen++; p++; }
+    try { el.setSelectionRange(p, p); } catch {}
+  }
+  $("#budget").addEventListener("input", fmtBudgetInput);
+  $("#currency").addEventListener("change", () => {
+    const el = $("#budget"), v = parseFloat(el.value.replace(/,/g, ""));
+    if (!isNaN(v) && ZERO_DEC.has($("#currency").value)) el.value = String(Math.round(v));
+    fmtBudgetInput();
+    sync();
+  });
+
+  // ---------- selected criteria (quick remove) ----------
+  const payTimingText = { at_property: "Pay at property", prepay: "Prepay" };
+  const payMethodText = { cash: "Cash", card: "Credit card" };
+  function selItems(q) {
+    const it = [];
+    if (q.place) it.push({ t: q.place, core: true });
+    if (q.checkin && q.checkout && nightsOf(q) > 0) it.push({ t: `${fmtDate(q.checkin)} → ${fmtDate(q.checkout)} · ${nightsOf(q)} nights`, core: true });
+    it.push({ t: `${q.adults} adults · ${q.rooms} rooms`, core: true });
+    if (q.children) it.push({ t: `${q.children} children`, clear: () => { $("#children").value = 0; $("#childAges").value = ""; } });
+    it.push(q.currency !== DEFAULT_CUR ? { t: `Prices in ${q.currency}`, clear: () => { $("#currency").value = DEFAULT_CUR; } } : { t: `Prices in ${DEFAULT_CUR}`, core: true });
+    if (q.near) it.push({ t: `Near ${q.near}${q.radius ? ` · ≤ ${q.radius / 1000} km` : ""}`, clear: () => { $("#near").value = ""; $("#radius").value = ""; } });
+    for (const a of AMEN) if (q.amen.includes(a.k)) it.push({ t: a.label, clear: () => { $("#am_" + a.k).checked = false; } });
+    if (q.frontdesk) it.push({ t: "24h front desk", clear: () => { $("#frontdesk").checked = false; } });
+    if (q.freeCancel) it.push({ t: "Free cancellation", clear: () => { $("#freeCancel").checked = false; } });
+    if (q.payTiming !== "any") it.push({ t: payTimingText[q.payTiming], clear: () => setRadio("payTiming", "any") });
+    if (q.payMethod !== "any") it.push({ t: payMethodText[q.payMethod], clear: () => setRadio("payMethod", "any") });
+    if (q.budget) it.push({ t: `≤ ${money(q.budget, q.currency)}`, clear: () => { $("#budget").value = ""; } });
+    if (q.extra) it.push({ t: q.extra, clear: () => { $("#extra").value = ""; } });
+    if (!q.airbnb) it.push({ t: "No Airbnb", clear: () => { $("#srcAirbnb").checked = true; } });
+    if (!q.compare) it.push({ t: "No Agoda check", clear: () => { $("#compare").checked = true; } });
+    return it;
+  }
+  let selClears = [];
+  function renderSel() {
+    const items = selItems(readForm().q);
+    selClears = items.map(x => x.clear || null);
+    $("#selChips").innerHTML = items.map((x, i) => x.core
+      ? `<li class="core">${esc(x.t)}</li>`
+      : `<li>${esc(x.t)}<button type="button" data-i="${i}" aria-label="Remove ${esc(x.t)}" title="Remove">×</button></li>`).join("");
+    $("#clearAll").hidden = !items.some(x => x.clear);
+  }
+  function afterClear() { sync(); const s = store.get() || {}; s.draft = readForm().q; store.set(s); }
+  $("#selChips").addEventListener("click", ev => {
+    const b = ev.target.closest("button[data-i]"); if (!b) return;
+    const fn = selClears[+b.dataset.i]; if (fn) { fn(); afterClear(); }
+  });
+  $("#clearAll").addEventListener("click", () => { selClears.forEach(fn => fn && fn()); afterClear(); });
+
+  // ---------- confirm before searching ----------
+  let pendingQ = null, lastFocus = null;
+  function openConfirm(q) {
+    pendingQ = q; lastFocus = document.activeElement;
+    const n = nightsOf(q), crit = criteriaFor(q);
+    const amen = AMEN.filter(a => q.amen.includes(a.k)).map(a => a.label);
+    const rows = [
+      ["Destination", q.place],
+      ["Dates", `${fmtDate(q.checkin)}, ${q.checkin.slice(0, 4)} → ${fmtDate(q.checkout)}, ${q.checkout.slice(0, 4)} · ${n} nights`],
+      ["Guests & rooms", `${q.adults} adults${q.children ? `, ${q.children} children (ages ${q.ages.join(", ")})` : ""} · ${q.rooms} rooms`],
+      ["Currency", `${q.currency} · ${(CURRENCIES.find(c => c[0] === q.currency) || [, ""])[1]}`],
+      ["Location", q.near ? `Near ${q.near}${q.radius ? `, within ${q.radius / 1000} km` : ""}` : "No limit"],
+      ["Amenities", amen.length ? amen.join(", ") : "None required"],
+      ["Payment", [payTimingText[q.payTiming], payMethodText[q.payMethod]].filter(Boolean).join(" · ") || "Any"],
+      ["Other", [q.frontdesk && "24h front desk", q.freeCancel && "Free cancellation", q.extra].filter(Boolean).join(" · ") || "None"],
+      ["Budget", q.budget ? `Up to ${money(q.budget, q.currency)}` : "No limit"],
+      ["Sources", ["Booking.com", q.airbnb && "Airbnb", q.compare && "Agoda price check"].filter(Boolean).join(" · ") + ` · checking ${q.depth} places`]
+    ];
+    $("#cfList").innerHTML = rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("");
+    const notes = [];
+    if (q.airbnb && (q.payTiming === "at_property" || q.payMethod === "cash")) notes.push("Airbnb will be skipped: it only takes online payment, not pay-at-property or cash.");
+    if (crit.length >= 6) notes.push("Many requirements at once can leave few matches. Remove some if the results come back empty.");
+    $("#cfNote").textContent = notes.join(" "); $("#cfNote").hidden = !notes.length;
+    $("#confirm").hidden = false;
+    $("#cfOk").focus();
+  }
+  function closeConfirm() { $("#confirm").hidden = true; }
+  $("#cfOk").addEventListener("click", () => { closeConfirm(); if (pendingQ) startSearch(pendingQ); });
+  $("#cfEdit").addEventListener("click", () => {
+    closeConfirm();
+    document.querySelector("details.filters").open = true;
+    (lastFocus && lastFocus !== document.body ? lastFocus : $("#place")).focus();
+    $("#form").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  $("#confirm").addEventListener("click", ev => { if (ev.target.id === "confirm") $("#cfEdit").click(); });
+  __sprListen(document, "keydown", ev => { if (ev.key === "Escape" && !$("#confirm").hidden) $("#cfEdit").click(); });
+  $("#form").addEventListener("input", () => { sync(); const s = store.get() || {}; s.draft = readForm().q; store.set(s); });
+  $("#form").addEventListener("change", sync);
+
+  // ---------- environment ----------
+  function setEnv(kind, text) { const e = $("#env"); e.className = "env " + kind; $("#envText").textContent = text; }
+  (async () => {
+    if (!window.claude?.use) { setEnv("off", "Open in the Claude desktop app to search"); return; }
+    [mcp, sample] = await Promise.all([claude.use("mcp").catch(() => null), claude.use("sample").catch(() => null)]);
+    if (mcp && sample) setEnv("on", "Ready to search");
+    else if (!mcp) setEnv("off", "Needs the Claude desktop app");
+    else setEnv("off", "Page isn't allowed to ask Claude yet");
+  })();
+
+  // ---------- browser + Claude calls ----------
+  function textOf(r) {
+    const t = (r?.content || []).filter(b => b.type === "text").map(b => b.text).join("\n");
+    return nfc(t || (typeof r?.payload === "string" ? r.payload : JSON.stringify(r?.payload ?? "")));
+  }
+  async function browser(tool, input) {
+    if (stopped) throw STOP;
+    const args = tabId && tool !== "preview_start" ? { ...input, tabId } : input;
+    const r = await mcp.callTool(SERVER, tool, args, { cache: false });
+    if (stopped) throw STOP;
+    return r;
+  }
+  async function openUrl(url) {
+    if (tabId) {
+      try { await browser("navigate", { url }); return; } catch (e) { if (e === STOP) throw e; tabId = null; log("Old tab is gone, opening a new one."); }
+    }
+    try {
+      const r = await browser("preview_start", { url });
+      const p = r.payload; tabId = (p && typeof p === "object" && p.tabId) || (textOf(r).match(/"tabId"\s*:\s*"([^"]+)"/) || [])[1] || null;
+      log("Opened tab " + (tabId || "(default)"));
+    } catch (e) {
+      if (e === STOP || e?.code === "server_not_connected" || e?.code === "not_in_manifest" || e?.code === "cancelled") throw e;
+      log("Couldn't open a separate tab, using the current one."); tabId = null; await browser("navigate", { url });
+    }
+  }
+  const pageText = async max => textOf(await browser("get_page_text", { max_chars: max }));
+  async function askJson(prompt) {
+    if (stopped) throw STOP;
+    sampleCtl = new AbortController();
+    try { return await sample.json(prompt, { signal: sampleCtl.signal, cache: false }); }
+    finally { sampleCtl = null; }
+  }
+
+  // ---------- Booking specifics ----------
+  function searchUrl(q) {
+    const p = new URLSearchParams({ ss: q.near ? `${q.near}, ${q.place}` : q.place, checkin: q.checkin, checkout: q.checkout, group_adults: q.adults, no_rooms: q.rooms, group_children: q.children, order: "price" });
+    q.ages.forEach(a => p.append("age", a));
+    p.set("selected_currency", q.currency || "VND");
+    const f = [];
+    if (q.frontdesk) f.push("hotelfacility=8");
+    if (q.payTiming === "at_property") f.push("fc=5");
+    if (q.freeCancel) f.push("fc=2");
+    if (q.near && q.radius) f.push("distance=" + q.radius);
+    for (const a of AMEN) if ((q.amen || []).includes(a.k) && a.f) f.push(a.f);
+    if (f.length) p.set("nflt", f.join(";"));
+    return "https://www.booking.com/searchresults.vi.html?" + p;
+  }
+  function detailUrl(href, q) {
+    const u = new URL(href);
+    const p = new URLSearchParams({ checkin: q.checkin, checkout: q.checkout, group_adults: q.adults, no_rooms: q.rooms, group_children: q.children, selected_currency: q.currency || "VND" });
+    q.ages.forEach(a => p.append("age", a));
+    return u.origin + u.pathname + "?" + p;
+  }
+  function parseLinks(t, q) {
+    const out = new Map();
+    for (const m of t.matchAll(/link "(?:[^"]*?, )?Mở thông tin về ([^"]+)" \[ref_\d+\] href="([^"]+)"/g)) {
+      const name = m[1].trim(), key = name.toLowerCase();
+      if (!out.has(key) && /booking\.com\/hotel\//.test(m[2])) { try { out.set(key, { name, href: detailUrl(m[2], q) }); } catch {} }
+    }
+    return [...out.values()];
+  }
+  const KEYS = /(Được giới thiệu cho|Tổng cộng|Số người tối đa|Số lượng khách|24 giờ|24\/24|lễ tân|tiền mặt|thẻ|thanh toán|hủy|huỷ|Visa|Mastercard|JCB|Quy tắc chung|Điều cần biết|chỉ chấp nhận|đỗ xe|bãi đậu|bữa sáng|wifi|bếp|phòng tắm|thang máy|hồ bơi|vật nuôi|thú cưng|điều hòa|điều hoà|máy lạnh)/gi;
+  function excerpt(t, extra) {
+    const ranges = [[0, Math.min(t.length, 700)]];
+    const words = (extra || "").split(/\s+/).filter(w => w.length > 2).map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    const re = words.length ? new RegExp(KEYS.source + "|" + words.join("|"), "gi") : KEYS;
+    for (const m of t.matchAll(re)) ranges.push([Math.max(0, m.index - 200), Math.min(t.length, m.index + 260)]);
+    ranges.sort((a, b) => a[0] - b[0]);
+    const merged = [];
+    for (const r of ranges) { const last = merged[merged.length - 1]; if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1]); else merged.push(r.slice()); }
+    return merged.map(([a, b]) => t.slice(a, b).replace(/\s+/g, " ")).join(" … ").slice(0, 9000);
+  }
+
+  // ---------- Agoda price comparison ----------
+  // Agoda's search list only renders while the browser pane is on screen, so Agoda is used
+  // to price-check the finalists: suggest API (JSON) → property id → "từ X ₫" on the property page.
+  function sameHotel(a, b, place) {
+    const generic = new Set(["hotel", "khach", "san", "nha", "nghi", "guest", "house", "homestay", "home", "hostel", "resort", "villa", "the", "and", "boutique", "inn", "motel", "apartment", "can", "ho", "dalat", ...plain(place).split(/\s+/)]);
+    const toks = s => plain(s).replace(/[^\p{L}\p{N}\s]/gu, " ").split(/\s+/).filter(w => w.length >= 2 && !generic.has(w));
+    const A = toks(a), B = new Set(toks(b));
+    if (!A.length) return plain(a) === plain(b);
+    return A.filter(w => B.has(w)).length / A.length >= 0.5;
+  }
+  async function agodaPrice(r, q) {
+    const n = nightsOf(q);
+    await openUrl(`https://www.agoda.com/api/cronos/search/GetUnifiedSuggestResult/3/24/24/0/vi-vn/?searchText=${encodeURIComponent(r.name + " " + q.place)}&origin=VN&cid=-1&pageTypeId=1`);
+    const raw = await pageText(30000);
+    let list = [];
+    try { list = JSON.parse(raw.slice(raw.indexOf("{"), raw.lastIndexOf("}") + 1)).ViewModelList || []; } catch {}
+    const hit = list.find(v => v.IsHotel && v.ObjectId && sameHotel(r.name, v.Name || "", q.place));
+    if (!hit) return { miss: "Not found on Agoda" };
+    const href = `https://www.agoda.com/vi-vn/accom/property?propertyId=${hit.ObjectId}&finalPriceView=1&adults=${q.adults}&children=${q.children}${q.ages.length ? "&childAges=" + q.ages.join(",") : ""}&rooms=${q.rooms}&checkIn=${q.checkin}&los=${n}&currencyCode=${q.currency || "VND"}`;
+    await openUrl(href);
+    for (let k = 0; k < 7; k++) {
+      await sleep(k ? 2000 : 3500);
+      const t = textOf(await browser("find", { query: "Xem giá" }));
+      const m = t.match(/từ\s*([^"\n]*?\d[^"\n]*?)\s*Xem giá/);
+      const v = m && viNum(m[1]);
+      if (v) return { from: v, cur: q.currency || "VND", href, agodaName: hit.Name };
+    }
+    return { miss: "Agoda shows no price for these dates", href };
+  }
+
+  // ---------- Airbnb ----------
+  // Search cards render without scrolling and carry the all-in total; listing pages do not
+  // render while the pane is hidden, so Airbnb rows are judged from the card plus Airbnb's fixed rules.
+  async function airbnbSearch(q, guests) {
+    const p = new URLSearchParams({ checkin: q.checkin, checkout: q.checkout, adults: q.adults, min_bedrooms: q.rooms, currency: q.currency || "VND" });
+    if (q.children) p.set("children", q.children);
+    const url = `https://www.airbnb.com.vn/s/${encodeURIComponent(q.near ? `${q.near}, ${q.place}` : q.place)}/homes?` + p;
+    log("Opening " + url);
+    await openUrl(url);
+    let tree = "";
+    for (let k = 0; k < 4; k++) {
+      await sleep(k ? 2500 : 3000);
+      tree = textOf(await browser("read_page", { filter: "all", max_chars: 150000 }));
+      if (/\/rooms\/\d+/.test(tree) && /cho \d+ đêm/.test(tree)) break;
+    }
+    const blocks = new Map();
+    for (const part of tree.split(/\n\s{0,3}group \[ref_\d+\]/)) {
+      const id = (part.match(/\/rooms\/(\d+)/) || [])[1];
+      if (!id || blocks.has(id)) continue;
+      const strs = [...new Set([...part.matchAll(/(?:generic|heading|button) "([^"]+)"/g)].map(m => m[1]))]
+        .filter(s => !/^(Ảnh|Thêm vào danh sách|Hiển thị chi tiết|Giá đã bao gồm)/.test(s));
+      blocks.set(id, strs.join(" | ").slice(0, 700));
+    }
+    log(`Airbnb: ${blocks.size} listings on the page.`);
+    if (!blocks.size) {
+      if (/(^|\D)0 nhà ở|Không có kết quả|Không có kết quả khớp/i.test(tree)) return { ok: [], excluded: [] };
+      const e = new Error(); e.userMsg = BLOCK_RE.test(tree.slice(0, 6000)) || tree.length < 600 ? "Airbnb showed a verification page or blocked access" : "Couldn't read the Airbnb listings"; throw e;
+    }
+    step("airbnb", "active", "Claude is reading…");
+    const list = await askJson(
+`These are listing cards from an Airbnb search page (the page is in Vietnamese; each line is "id: card text"). Guests: ${guests}.
+Return ONLY a JSON array, one element per listing:
+{"id": string, "title": string (listing title, translated to English), "kind": string (in English, e.g. "Apartment", "House", "Room"), "bedrooms": number|null, "beds": string (in English), "total": number|null (the amount in "… cho N đêm" (for N nights), written as a plain number — the page uses "." as the thousands separator and "," for decimals; it is the all-in total for the stay), "rating": number|null (out of 5), "reviews": number|null, "freeCancel": boolean (the card says "Hủy miễn phí" = free cancellation), "roomsOk": boolean (true when there are at least ${q.rooms} bedrooms and enough beds for the whole group), "why": string (short reason in English if roomsOk=false), "extra": "yes"|"no"|"unknown" (other requirement: ${q.extra || "none"}; "yes"/"no" only when the card says so), "extraWhy": string}
+
+${[...blocks].map(([id, s]) => `${id}: ${s}`).join("\n")}`);
+    const crit = criteriaFor(q), ok = [], excluded = [];
+    for (const x of (Array.isArray(list) ? list : [])) {
+      if (!x || !blocks.has(String(x.id))) continue;
+      const name = x.title || x.kind || "Airbnb stay";
+      const abHref = `https://www.airbnb.com.vn/rooms/${x.id}?adults=${q.adults}${q.children ? `&children=${q.children}` : ""}&check_in=${q.checkin}&check_out=${q.checkout}`;
+      const abRoom = [x.kind, x.bedrooms ? `${x.bedrooms} bedrooms` : "", x.beds].filter(Boolean).join(" · ");
+      const abX = why => xOf({ name, href: abHref, total: x.total || null, currency: q.currency || "VND", room: abRoom, score: x.rating, reviews: x.reviews }, why, "Airbnb");
+      if (x.roomsOk === false) { excluded.push(abX(x.why || "Not enough bedrooms")); continue; }
+      if (!x.total) continue;
+      const c = {};
+      for (const k of crit) {
+        if (k.k === "frontdesk") c.frontdesk = { v: "unknown", why: "No front desk on Airbnb; usually self check-in" };
+        if (k.k === "prepay") c.prepay = { v: "yes", why: "Paid online via Airbnb" };
+        if (k.k === "card") c.card = { v: "yes", why: "Airbnb takes cards at booking" };
+        if (k.k === "cancel") c.cancel = x.freeCancel ? { v: "yes", why: "Card says free cancellation" } : { v: "unknown", why: "Card doesn't mention free cancellation" };
+        if (k.k === "extra") c.extra = { v: ["yes", "no"].includes(x.extra) ? x.extra : "unknown", why: x.extraWhy || "" };
+        if (k.k.startsWith("am_")) c[k.k] = { v: "unknown", why: "Airbnb cards don't list amenities; check the listing" };
+        if (k.k === "near") c.near = { v: "unknown", why: `Airbnb searched around ${q.near}; no distance shown` };
+      }
+      if (c.extra?.v === "no") { excluded.push(abX("Fails: " + (c.extra.why || q.extra))); continue; }
+      if (q.budget && x.total > q.budget) continue;
+      ok.push({ source: "Airbnb", name, room: [x.kind, x.bedrooms ? `${x.bedrooms} bedrooms` : "", x.beds].filter(Boolean).join(" · "),
+        total: x.total, currency: q.currency || "VND", score: x.rating, reviews: x.reviews, criteria: c,
+        href: `https://www.airbnb.com.vn/rooms/${x.id}?adults=${q.adults}${q.children ? `&children=${q.children}` : ""}&check_in=${q.checkin}&check_out=${q.checkout}`,
+        note: "Paid online via Airbnb" });
+    }
+    ok.sort((a, b) => a.total - b.total);
+    return { ok: ok.slice(0, 4), excluded: excluded.slice(0, 6) };
+  }
+
+  // ---------- steps UI ----------
+  function step(s, state, note) {
+    const li = document.querySelector(`.steps li[data-s="${s}"]`); if (!li) return;
+    li.className = state; if (note != null) li.querySelector("small").textContent = note;
+  }
+  function resetSteps() { document.querySelectorAll(".steps li").forEach(li => { li.className = ""; li.querySelector("small").textContent = "waiting"; }); $("#runErr").hidden = true; $("#log").textContent = ""; }
+  function errorText(e) {
+    if (e === STOP) return "Search stopped.";
+    const c = e?.code;
+    const map = {
+      server_not_connected: "Can't reach the Claude app's browser. Open this page in the Claude desktop app (not a web browser).",
+      not_in_manifest: "You haven't allowed this page to use the Claude browser. Search again and choose Allow.",
+      approval_required: "This page needs your permission to use the Claude browser. Search again and choose Allow.",
+      cancelled: "You declined a browser action, so the search stopped.",
+      not_granted: "You haven't allowed this page to ask Claude. Search again and choose Allow.",
+      sampling_disabled: "This account can't use Claude from a page.",
+      rate_limited: "Claude usage is limited right now. Wait a few minutes and try again.",
+      invalid_json: "Claude's answer wasn't in the expected format. Search again to retry.",
+      session_expired: "Your session expired. Sign in to claude.ai again and retry.",
+      tool_error: "Browser error: " + (e?.message || ""),
+      prompt_too_large: "The page is too long to read. Check fewer places in detail and retry."
+    };
+    return map[c] || (e?.userMsg) || `Error (${c || "unknown"}). ${e?.message || ""}`.trim();
+  }
+
+  // ---------- the agent run ----------
+  // Each source runs on its own: a source that cannot be opened (blocked, verification page,
+  // network error) is recorded and skipped, and the report uses only the sources that worked.
+  const BLOCK_RE = /captcha|xác minh|chứng minh bạn|phần mềm tự động|robot|access denied|bị chặn|too many requests|unusual traffic|\b429\b/i;
+  const FATAL = new Set(["server_not_connected", "not_in_manifest", "approval_required", "cancelled", "not_granted", "sampling_disabled", "session_expired"]);
+  const isFatal = e => e === STOP || stopped || FATAL.has(e?.code);
+  const srcFail = msg => { const e = new Error(msg); e.userMsg = msg; return e; };
+
+  async function bookingSearch(q, guests, crit, n, track) {
+    const excluded = [];
+    track("open"); step("open", "active", "opening…");
+    const url = searchUrl(q); log("Opening " + url);
+    await openUrl(url);
+    step("open", "done", "Booking.com");
+
+    track("read"); step("read", "active", "reading page…");
+    const text = await pageText(60000);
+    const linksRaw = textOf(await browser("find", { query: "Mở thông tin về" }));
+    const links = parseLinks(linksRaw, q);
+    log(`Booking: read ${text.length} characters, ${links.length} property links.`);
+    if (!links.length) {
+      if (/(^|\D)0 chỗ nghỉ|không tìm thấy chỗ nghỉ/i.test(text)) { step("read", "done", "0 match the filters"); return { ok: [], excluded, note: "nothing matches the filters" }; }
+      throw srcFail(BLOCK_RE.test(text.slice(0, 4000)) || text.length < 400 ? "Booking showed a verification page or blocked access" : "Couldn't read the Booking listings");
+    }
+    step("read", "active", "Claude is reading…");
+    const listed = await askJson(
+`You are reading the text of a Booking.com search results page (the page is in Vietnamese), sorted by lowest price.
+Guests: ${guests}.
+Only consider properties whose name is in this list (keep the names exactly): ${JSON.stringify(links.map(l => l.name))}
+Return ONLY a JSON array, one element per property, in page order:
+{"name": string, "room": string (suggested rooms, translated to English, e.g. "2× Double Room with Private Bathroom"), "total": number|null (the amount on the "Tổng cộng" (total) line; if there is an original and a current price, take the current one, the last number; write a plain number — the page uses "." as the thousands separator and "," for decimals), "currency": string (ISO code, e.g. "VND", "USD"), "score": number|null, "reviews": number|null, "roomsOk": boolean (true only when the suggested rooms are exactly ${q.rooms} private room(s) that fit the whole group; false for dorm beds / shared bunk beds, or a number of rooms other than ${q.rooms}), "why": string (short reason in English if roomsOk=false), "dist": number|null (distance shown on the card, converted to km, e.g. "cách 450m từ Chợ Đà Lạt" → 0.45, "Cách trung tâm 0,8km" → 0.8), "distLabel": string (in English, e.g. "from Da Lat Market", "from center")}
+Page text:
+"""${text.slice(0, 45000)}"""`);
+    const arr = Array.isArray(listed) ? listed : [];
+    const byName = new Map(links.map(l => [l.name.toLowerCase(), l]));
+    const cands = arr.filter(x => x && x.name).map(x => ({ ...x, href: (byName.get(nfc(x.name).trim().toLowerCase()) || links.find(l => nfc(x.name).toLowerCase().includes(l.name.toLowerCase())) || {}).href }));
+    for (const c of cands) if (c.roomsOk === false) excluded.push(xOf(c, c.why || "Wrong number of rooms"));
+    let pick = cands.filter(c => c.roomsOk !== false && c.href);
+    if (q.budget) for (const c of pick) if (c.total && c.total > q.budget * 1.15) excluded.push(xOf(c, `Over budget (${money(c.total, c.currency)})`));
+    if (q.budget) pick = pick.filter(c => !c.total || c.total <= q.budget * 1.15);
+    pick = pick.sort((a, b) => (a.total ?? Infinity) - (b.total ?? Infinity)).slice(0, q.depth);
+    step("read", "done", `${cands.length} found · checking ${pick.length}`);
+    log("Booking candidates: " + pick.map(p => `${p.name} (${money(p.total, p.currency)})`).join(", "));
+
+    track("detail");
+    const details = [];
+    let detailFails = 0;
+    for (let i = 0; i < pick.length; i++) {
+      const c = pick[i];
+      step("detail", "active", `${i + 1}/${pick.length} · ${c.name}`);
+      try {
+        await openUrl(c.href);
+        const t = await pageText(80000);
+        if (t.length < 400 && BLOCK_RE.test(t)) throw srcFail("detail page blocked");
+        details.push({ id: "h" + i, c, ex: excerpt(t, q.extra) });
+        log(`Read ${c.name}: ${t.length} characters`);
+      } catch (e) {
+        if (isFatal(e)) throw e;
+        detailFails++;
+        log(`Skipped ${c.name}: ${e?.userMsg || e?.code || e?.message}`);
+        excluded.push(xOf(c, "Couldn't open the detail page"));
+        if (detailFails >= 3 && !details.length) throw srcFail("Booking blocked the detail pages");
+      }
+    }
+    step("detail", "done", `${details.length} stays`);
+
+    track("judge"); step("judge", "active", "Claude is scoring…");
+    const verdicts = details.length ? await askJson(
+`Check these properties for guests: ${guests}, dates ${q.checkin} to ${q.checkout}. The page excerpts are in Vietnamese.
+Criteria to score (key: description):
+${crit.filter(c => !c.local).map(c => `- ${c.k}: ${c.ask}`).join("\n") || "- (no extra criteria)"}
+Rules: "yes" only when the page states it clearly; "no" when the page clearly says not (e.g. "Chỉ thanh toán bằng tiền mặt" means cash only, so card=no); otherwise "unknown". Do not guess.
+"total": total price for exactly ${q.rooms} room(s) × ${n} night(s), including taxes and fees if the page says so; if the guest needs pay-at-property or free cancellation, use the price of the rate that offers it. If not found, use the price from the results page.
+"capacity": "yes" if the rooms fit the whole group with exactly ${q.rooms} room(s), "no" if clearly not, "unknown" if unclear.
+"room": the room description in English.
+"why" for each criterion: a short piece of evidence from the page, translated into English, max 70 characters.
+Return ONLY a JSON array: [{"id": string, "total": number|null, "currency": string, "room": string, "capacity": "yes"|"no"|"unknown", "criteria": {${crit.filter(c => !c.local).map(c => `"${c.k}": {"v": "yes"|"no"|"unknown", "why": string}`).join(", ")}}, "note": string (anything notable, in English, may be empty)}]
+
+${details.map(d => `### id: ${d.id} | ${d.c.name} | from results page: ${d.c.room || "?"}, total ${d.c.total ?? "?"} ${d.c.currency || ""}\n${d.ex}`).join("\n\n")}`) : [];
+    const vmap = new Map((Array.isArray(verdicts) ? verdicts : []).map(v => [String(v.id), v]));
+    const ok = [];
+    for (const d of details) {
+      const v = vmap.get(d.id);
+      if (!v) { excluded.push(xOf(d.c, "Claude couldn't score this one")); continue; }
+      const row = { source: "Booking", name: d.c.name, room: v.room || d.c.room, total: v.total ?? d.c.total, currency: v.currency || d.c.currency || q.currency || "VND", score: d.c.score, reviews: d.c.reviews, href: d.c.href, criteria: v.criteria || {}, note: v.note || "",
+        dist: d.c.dist == null || d.c.dist === "" || isNaN(+d.c.dist) ? null : +d.c.dist, distLabel: d.c.distLabel || "" };
+      if (q.near && q.radius) row.criteria.near = row.dist == null ? { v: "unknown", why: "No distance on the card" }
+        : row.dist * 1000 <= q.radius ? { v: "yes", why: `${fmtDist(row.dist)} ${row.distLabel}` } : { v: "no", why: `${fmtDist(row.dist)} ${row.distLabel}` };
+      const bad = crit.find(c => row.criteria[c.k]?.v === "no");
+      if (v.capacity === "no") excluded.push(xOf(row, "Rooms don't fit the whole group"));
+      else if (bad) excluded.push(xOf(row, `Fails: ${bad.label}${row.criteria[bad.k].why ? " (" + row.criteria[bad.k].why + ")" : ""}`));
+      else if (q.budget && row.total && row.total > q.budget) excluded.push(xOf(row, `Over budget (${money(row.total, row.currency)})`));
+      else ok.push(row);
+    }
+    step("judge", "done", `${ok.length} match`);
+    return { ok, excluded };
+  }
+
+  async function run(q) {
+    running = true; stopped = false; sortBy = "price_asc";
+    $("#go").disabled = true; $("#go").textContent = "Searching…"; $("#stop").hidden = false;
+    $("#runPanel").hidden = false; resetSteps();
+    const crit = criteriaFor(q), n = nightsOf(q);
+    const guests = `${q.adults} adults${q.children ? `, ${q.children} children (ages ${q.ages.join(", ")})` : ""}, need exactly ${q.rooms} private room(s), ${n} night(s)`;
+    const data = { query: q, at: new Date().toISOString(), results: [], excluded: [], sources: [] };
+    let stepNow = "open";
+    const track = s => { stepNow = s; };
+    const BOOKING_STEPS = ["open", "read", "detail", "judge"];
+    const publish = () => { data.results = rank(data.results); render(data); };
+    try {
+      // 1) Booking.com
+      let bookingOk = false;
+      try {
+        const bk = await bookingSearch(q, guests, crit, n, track);
+        data.results.push(...bk.ok); data.excluded.push(...bk.excluded);
+        data.sources.push({ name: "Booking.com", status: "ok", count: bk.ok.length, why: bk.note || "" });
+        bookingOk = true;
+        publish();
+      } catch (e) {
+        if (isFatal(e)) throw e;
+        const why = errorText(e);
+        step(stepNow, "fail", "couldn't open");
+        BOOKING_STEPS.slice(BOOKING_STEPS.indexOf(stepNow) + 1).forEach(s => step(s, "skip", "skipped"));
+        data.sources.push({ name: "Booking.com", status: "fail", why });
+        log("Booking failed, switching source: " + why);
+      }
+
+      // 2) Airbnb — also used as the fallback when Booking could not be opened
+      stepNow = "airbnb";
+      const wantAirbnb = q.airbnb || !bookingOk;
+      if (!wantAirbnb) { step("airbnb", "skip", "turned off"); data.sources.push({ name: "Airbnb", status: "skip", why: "you turned this source off" }); }
+      else if (q.payTiming === "at_property" || q.payMethod === "cash") {
+        step("airbnb", "skip", "skipped: online payment only");
+        data.sources.push({ name: "Airbnb", status: "skip", why: "Airbnb only takes online payment, which doesn't fit pay-at-property / cash" });
+        log("Skipped Airbnb because you need pay-at-property / cash.");
+      } else {
+        if (!q.airbnb) log("Booking unavailable, switching to Airbnb.");
+        step("airbnb", "active", q.airbnb ? "opening…" : "instead of Booking…");
+        try {
+          const ab = await airbnbSearch(q, guests);
+          data.results.push(...ab.ok); data.excluded.push(...ab.excluded);
+          data.sources.push({ name: "Airbnb", status: "ok", count: ab.ok.length, why: q.airbnb ? "" : "used instead of Booking" });
+          publish();
+          step("airbnb", "done", `${ab.ok.length} match`);
+        } catch (e) {
+          if (isFatal(e)) throw e;
+          const why = errorText(e);
+          step("airbnb", "fail", "couldn't open");
+          data.sources.push({ name: "Airbnb", status: "fail", why });
+          log("Airbnb error: " + why);
+        }
+      }
+
+      // 3) Agoda price check for Booking rows (only when Booking worked)
+      stepNow = "agoda";
+      const bookingRows = rank(data.results).filter(r => (r.source || "Booking") === "Booking");
+      if (q.compare && bookingRows.length) {
+        const top = bookingRows.slice(0, 5);
+        let agodaHits = 0, agodaErrs = 0;
+        for (let i = 0; i < top.length; i++) {
+          step("agoda", "active", `${i + 1}/${top.length} · ${top[i].name}`);
+          try { top[i].agoda = await agodaPrice(top[i], q); if (top[i].agoda.from) agodaHits++; log(`Agoda ${top[i].name}: ${top[i].agoda.from ? money(top[i].agoda.from, q.currency) : top[i].agoda.miss}`); }
+          catch (e) {
+            if (isFatal(e)) throw e;
+            agodaErrs++; top[i].agoda = { miss: "Couldn't open Agoda" }; log(`Agoda error ${top[i].name}: ${e?.userMsg || e?.code || e?.message}`);
+            if (agodaErrs >= 2 && !agodaHits) { top.slice(i + 1).forEach(t => { t.agoda = { miss: "Couldn't open Agoda" }; }); break; }
+          }
+          render(data);
+        }
+        const failed = agodaErrs >= 2 && !agodaHits;
+        step("agoda", failed ? "fail" : "done", failed ? "couldn't open" : `${agodaHits}/${top.length} priced`);
+        data.sources.push(failed ? { name: "Agoda (price check)", status: "fail", why: "Couldn't open Agoda" } : { name: "Agoda (price check)", status: "ok", count: agodaHits, why: "" });
+      } else {
+        step("agoda", "skip", q.compare ? "no Booking stays to compare" : "turned off");
+        if (q.compare) data.sources.push({ name: "Agoda (price check)", status: "skip", why: "no Booking stays to compare" });
+      }
+
+      publish();
+      const opened = data.sources.filter(s => s.status === "ok" && !s.name.startsWith("Agoda"));
+      if (!opened.length) {
+        $("#runErr").textContent = "Couldn't open any search source. " + data.sources.filter(s => s.status === "fail").map(s => `${s.name}: ${s.why}`).join(" · ") + ". Try again in a few minutes.";
+        $("#runErr").hidden = false;
+      }
+      const s = store.get() || {}; s.last = data; store.set(s);
+      finish();
+    } catch (err) {
+      const e = stopped ? STOP : err;
+      step(stepNow, "fail", e === STOP ? "stopped" : "error");
+      $("#runErr").textContent = errorText(e) + (data.results.length ? " The table below keeps results from the sources that finished." : "");
+      $("#runErr").hidden = false;
+      log("Error: " + (e?.code || "") + " " + (e?.message || ""));
+      if (data.results.length) { data.sources.push({ name: "Search", status: "fail", why: e === STOP ? "stopped midway" : errorText(e) }); publish(); }
+      finish();
+    }
+  }
+  function finish() { running = false; $("#go").disabled = false; $("#go").textContent = "Find cheapest stay"; $("#stop").hidden = true; }
+
+  $("#form").addEventListener("submit", ev => {
+    ev.preventDefault();
+    if (running) return;
+    const { q, errs } = readForm();
+    $("#formErr").hidden = !errs.length; $("#formErr").textContent = errs.join(" ");
+    if (errs.length) return;
+    openConfirm(q);
+  });
+  function startSearch(q) {
+    if (!mcp || !sample) {
+      $("#runPanel").hidden = false; resetSteps();
+      $("#runErr").textContent = !mcp ? "Open this page in the Claude desktop app to control the browser. In a web browser you can only view past results." : "This page isn't allowed to ask Claude yet.";
+      $("#runErr").hidden = false; return;
+    }
+    run(q);
+  }
+  $("#stop").addEventListener("click", () => { stopped = true; sampleCtl?.abort(); $("#stop").hidden = true; });
+  $("#copy").addEventListener("click", async () => {
+    if (!current) return;
+    const q = current.query, crit = criteriaFor(q);
+    const srcLine = (current.sources || []).map(s => `${s.name}: ${s.status === "ok" ? "used" : s.status === "fail" ? "couldn't open (" + s.why + ")" : "skipped (" + s.why + ")"}`).join("; ");
+    const lines = [`Stay search: ${q.place}, ${fmtDate(q.checkin)} → ${fmtDate(q.checkout)}, ${q.adults} adults${q.children ? ` + ${q.children} children` : ""}, ${q.rooms} rooms`, ...(srcLine ? ["Sources: " + srcLine] : []), "",
+      ["#", "Stay", "Total", "Agoda from /room/night", ...crit.map(c => c.label), "Link"].join(" | ")];
+    current.results.slice().sort(SORTS[sortBy] || SORTS.price_asc).forEach((r, i) => lines.push([i + 1, `${r.source || "Booking"}: ${r.name}${r.dist != null ? ` (${fmtDist(r.dist)} ${r.distLabel || ""})` : ""}`, money(r.total, r.currency), r.agoda?.from ? money(r.agoda.from, r.agoda.cur || "VND") : "—", ...crit.map(c => ({ yes: "Yes", no: "No" }[r.criteria?.[c.k]?.v] || "Unclear")), enLink(r.href)].join(" | ")));
+    if (current.excluded?.length) { lines.push("", "Excluded:"); current.excluded.forEach(x => lines.push([`${x.source || "Booking"}: ${String(x.name).replace(/^Airbnb · /, "")}`, x.total ? money(x.total, x.currency || q.currency || "VND") : "—", x.why || "", enLink(xHref(x, q))].join(" | "))); }
+    try { await navigator.clipboard.writeText(lines.join("\n")); $("#copy").textContent = "Copied"; }
+    catch { const r = document.createRange(); r.selectNodeContents($("#resBody")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); $("#copy").textContent = "Table selected, press Ctrl/Cmd+C"; }
+    setTimeout(() => $("#copy").textContent = "Copy table", 2500);
+  });
+
+  $("#sortBy").addEventListener("change", () => {
+    sortBy = $("#sortBy").value;
+    if (current) render(current);
+  });
+
+  // ---------- boot ----------
+  $("#currency").innerHTML = CURRENCIES.map(([c, name]) => `<option value="${c}">${c} · ${esc(name)}</option>`).join("");
+  $("#amenTags").innerHTML = AMEN.map(a => `<label class="tog"><input type="checkbox" name="amen" value="${a.k}" id="am_${a.k}"><span>${esc(a.label)}</span></label>`).join("");
+  const saved = window.__sprState || store.get(); window.__sprState = null;
+  window.__spr = { busy: () => running, snapshot: () => ({ draft: readForm().q, last: current && !current.example ? current : null }) };
+  fillForm(saved?.draft || { ...EXQ, currency: DEFAULT_CUR });
+  render(saved?.last || EXAMPLE);
+};
+
+(() => {
+  const KEY = "san-phong-re:lang", TITLES = { vi: "Săn Phòng Rẻ", en: "Stay Hunter" };
+  const root = document.getElementById("spr-root");
+  let cur = null, owned = [];
+  // document-level listeners of the mounted language, removed on switch
+  window.__sprListen = (t, type, fn, opt) => { owned.push([t, type, fn, opt]); t.addEventListener(type, fn, opt); };
+  function mount(lang, state) {
+    owned.forEach(([t, type, fn, opt]) => t.removeEventListener(type, fn, opt)); owned = [];
+    root.replaceChildren(document.getElementById("spr-" + lang).content.cloneNode(true));
+    document.documentElement.lang = lang; document.title = TITLES[lang];
+    window.__sprState = state || null; window.__spr = null;
+    window.__SPR_APPS[lang]();
+    cur = lang;
+    root.querySelectorAll(".lang [data-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  }
+  document.addEventListener("click", ev => {
+    const b = ev.target.closest(".lang [data-lang]");
+    if (!b || b.dataset.lang === cur) return;
+    if (window.__spr?.busy?.()) {
+      const t = document.getElementById("envText");
+      if (t) t.textContent = cur === "vi" ? "Đang tìm — đổi ngôn ngữ sau khi tìm xong" : "Search running — switch language when it finishes";
+      return;
+    }
+    const state = window.__spr?.snapshot?.();
+    try { localStorage.setItem(KEY, b.dataset.lang); } catch {}
+    mount(b.dataset.lang, state);
+    root.querySelector('.lang [data-lang="' + cur + '"]')?.focus();
+  });
+  let lang = null;
+  try { lang = localStorage.getItem(KEY); } catch {}
+  mount(window.__SPR_APPS[lang] ? lang : "vi");
 })();
 </script>

@@ -4,25 +4,25 @@
     "name": "Kanabonbon"
   },
   "metadata": {
-    "description": "Trợ lý tìm khách sạn, nhà nghỉ, homestay rẻ nhất đúng số người, số phòng và yêu cầu. / Find the cheapest stay for your exact group, rooms and requirements (Vietnamese and English versions).",
-    "version": "1.1.1"
+    "description": "Trợ lý tìm khách sạn, nhà nghỉ, homestay rẻ nhất đúng số người, số phòng và yêu cầu. / Find the cheapest stay for your exact group, rooms and requirements. Vietnamese and English interface.",
+    "version": "1.2.0"
   },
   "plugins": [
     {
       "name": "san-phong-re",
       "source": "./plugins/san-phong-re",
-      "description": "Tìm chỗ ở rẻ nhất trên Booking.com và Airbnb, so giá Agoda, kiểm tra lễ tân 24/24, cách thanh toán, vị trí, tiện ích. Có dashboard nhập liệu.",
-      "version": "1.0.1",
+      "description": "Tìm chỗ ở rẻ nhất trên Booking.com và Airbnb, so giá Agoda, kiểm tra lễ tân 24/24, cách thanh toán, vị trí, tiện ích. Dashboard nhập liệu, chọn tiếng Việt hoặc tiếng Anh. / Find the cheapest stay; dashboard in Vietnamese or English.",
+      "version": "1.1.0",
       "category": "productivity",
-      "keywords": ["khách sạn", "hotel", "booking", "airbnb", "agoda", "du lịch", "travel"]
-    },
-    {
-      "name": "stay-hunter",
-      "source": "./plugins/stay-hunter",
-      "description": "English version. Find the cheapest stay on Booking.com and Airbnb with an Agoda price check; verifies 24-hour front desk, payment terms, location and amenities. Includes a form-based dashboard.",
-      "version": "1.0.1",
-      "category": "productivity",
-      "keywords": ["hotel", "accommodation", "booking", "airbnb", "agoda", "travel", "cheap", "homestay"]
+      "keywords": [
+        "khách sạn",
+        "hotel",
+        "booking",
+        "airbnb",
+        "agoda",
+        "du lịch",
+        "travel"
+      ]
     }
   ]
 }

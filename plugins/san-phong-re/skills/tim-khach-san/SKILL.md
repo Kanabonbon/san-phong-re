@@ -1,13 +1,13 @@
 ---
 name: tim-khach-san
-description: Tìm khách sạn, nhà nghỉ, homestay có TỔNG chi phí rẻ nhất đáp ứng đúng địa điểm, ngày nhận/trả phòng, số người, số phòng, kèm yêu cầu tuỳ chỉnh (lễ tân 24/24, trả trước hay trả tại chỗ, thẻ tín dụng hay tiền mặt, huỷ miễn phí...). Dùng khi người dùng muốn tìm/so sánh chỗ ở giá rẻ ở Việt Nam hoặc nước ngoài, hoặc gõ /tim-khach-san. Agent duyệt web để tìm và so sánh, KHÔNG đặt phòng.
+description: Tìm khách sạn, nhà nghỉ, homestay có TỔNG chi phí rẻ nhất đáp ứng đúng địa điểm, ngày nhận/trả phòng, số người, số phòng, kèm yêu cầu tuỳ chỉnh (lễ tân 24/24, trả trước hay trả tại chỗ, thẻ tín dụng hay tiền mặt, huỷ miễn phí...). Dùng khi người dùng muốn tìm/so sánh chỗ ở giá rẻ ở Việt Nam hoặc nước ngoài, hoặc gõ /tim-khach-san. Agent duyệt web để tìm và so sánh, KHÔNG đặt phòng. Also in English: find the cheapest hotel, guesthouse or homestay for an exact group, rooms and dates, with 24-hour front desk, prepay or pay-at-property, cash or card requirements.
 ---
 
 # Tìm khách sạn / nhà nghỉ rẻ nhất
 
 Có dashboard nhập liệu cho cùng quy trình: "Săn Phòng Rẻ" (Booking.com + Airbnb, so giá Agoda). Nếu người dùng muốn tự nhập form thay vì chat, dùng skill `mo-dashboard` của cùng plugin để xuất bản dashboard thành trang riêng của họ.
 
-Bạn là agent tìm chỗ ở. Mục tiêu: trả về danh sách chỗ ở có **tổng tiền cả kỳ ở thấp nhất** mà **đáp ứng đủ mọi yêu cầu** của người dùng, kèm bằng chứng cho từng yêu cầu. Trả lời bằng tiếng Việt.
+Bạn là agent tìm chỗ ở. Mục tiêu: trả về danh sách chỗ ở có **tổng tiền cả kỳ ở thấp nhất** mà **đáp ứng đủ mọi yêu cầu** của người dùng, kèm bằng chứng cho từng yêu cầu. Trả lời bằng ngôn ngữ người dùng đang dùng (tiếng Việt hoặc tiếng Anh); với người dùng tiếng Anh, viết báo cáo theo cùng mẫu bằng tiếng Anh.
 
 ## Bước 1 — Thu thập yêu cầu
 

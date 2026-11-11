@@ -6,6 +6,7 @@ Trợ lý tìm **khách sạn, nhà nghỉ, homestay có tổng chi phí rẻ nh
 - Kiểm tra từng chỗ: đủ phòng cho cả nhóm, tổng tiền đã gồm thuế phí, lễ tân 24/24, trả trước hay trả tại chỗ, tiền mặt hay thẻ, huỷ miễn phí
 - Lọc theo **vị trí** (gần một địa điểm, trong vòng 1/3/5 km) và **tiện ích** (đỗ xe, bữa sáng, bếp, thang máy…)
 - Báo giá theo **10 loại tiền** (mặc định VND), sắp xếp theo giá, khoảng cách, đánh giá
+- Dashboard có nút **VI | EN** để chọn hiển thị tiếng Việt hoặc tiếng Anh
 - Nguồn nào bị chặn thì tự chuyển sang nguồn khác và ghi rõ trong báo cáo
 - **Không đặt phòng**: agent chỉ tìm và so sánh, bạn tự bấm link để đặt
 
@@ -36,6 +37,8 @@ Mở lại app Claude desktop để plugin được nạp.
 > Mở dashboard Săn Phòng Rẻ
 
 Claude tạo cho bạn một trang dashboard riêng. Ghim trang lại, sau đó mỗi lần cần tìm chỉ việc mở trang, điền form, bấm **Tìm** và xác nhận tiêu chí. Lần đầu tìm, chọn **Cho phép** khi app hỏi quyền dùng trình duyệt và quyền hỏi Claude.
+
+Muốn giao diện tiếng Anh: bấm **EN** ở góc trên bên phải dashboard.
 
 **Cách 2 — Chat:** gõ yêu cầu bằng lời, ví dụ:
 
