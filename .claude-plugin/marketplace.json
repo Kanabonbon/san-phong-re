@@ -1,0 +1,20 @@
+{
+  "name": "san-phong-re",
+  "owner": {
+    "name": "Kanabonbon"
+  },
+  "metadata": {
+    "description": "Trợ lý tìm khách sạn, nhà nghỉ, homestay rẻ nhất đúng số người, số phòng và yêu cầu.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "san-phong-re",
+      "source": "./plugins/san-phong-re",
+      "description": "Tìm chỗ ở rẻ nhất trên Booking.com và Airbnb, so giá Agoda, kiểm tra lễ tân 24/24, cách thanh toán, vị trí, tiện ích. Có dashboard nhập liệu.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": ["khách sạn", "hotel", "booking", "airbnb", "agoda", "du lịch", "travel"]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "san-phong-re",
+  "version": "1.0.0",
+  "description": "Tìm khách sạn, nhà nghỉ, homestay có tổng chi phí rẻ nhất đúng số người, số phòng, ngày ở và yêu cầu (lễ tân 24/24, trả trước hay tại chỗ, tiền mặt hay thẻ, vị trí, tiện ích). Tìm trên Booking.com và Airbnb, so giá Agoda. Kèm dashboard nhập liệu trong app Claude desktop.",
+  "author": {
+    "name": "Kanabonbon"
+  },
+  "license": "MIT",
+  "keywords": ["khách sạn", "hotel", "booking", "airbnb", "agoda", "du lịch", "travel"]
+}
